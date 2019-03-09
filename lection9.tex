@@ -1,0 +1,419 @@
+\section{Рекурсивные функции и отношения}
+
+Рассмотрим примитивы, из которых будем собирать выражения:
+
+\begin{enumerate}
+\item $Z: N \rightarrow N$, $Z(x) = 0$
+\item $N: N \rightarrow N$, $N(x) = x'$
+\item Проекция. $U^n_i: N^n \rightarrow N$, $U^n_i (x_1, ... x_n) = x_i$
+\item Подстановка. Если $f: N^n \rightarrow N$ и $g_1, ... g_n: N^m \rightarrow N$, 
+  то $S\langle{}f,g_1,...g_n\rangle: N^m \rightarrow N$.
+При этом $S\langle{}f,g_1,...g_n\rangle (x_1,...x_m) = f(g_1(x_1,...x_m), ... g_n(x_1,...x_m))$
+\item Примитивная рекурсия. Если $f: N^n \rightarrow N$ и $g: N^{n+2} \rightarrow N$, то
+  $R\langle{}f,g\rangle: N^{n+1} \rightarrow N$, при этом
+  $$R\langle{}f,g\rangle (x_1,...x_n,y) = \left\{\begin{array}{ll}
+    f(x_1,...x_n) & , y = 0\\
+    g(x_1,...x_n,y-1,R\langle{}f,g\rangle(x_1,...x_n,y-1)) &, y > 0
+  \end{array}\right.$$
+\item Минимизация. Если $f: N^{n+1} \rightarrow N$, то $\mu \langle{}f\rangle: N^n \rightarrow N$, при этом
+  $\mu \langle{}f\rangle (x_1,...x_n)$ --- такое минимальное число $y$, что $f(x_1,...x_n,y) = 0$.
+  Если такого $y$ нет, результат данного примитива неопределен.
+\end{enumerate}
+
+Если некоторая функция $N^n \rightarrow N$ может быть задана с помощью данных примитивов, 
+то она называется рекурсивной. Если некоторую функцию можно собрать исключительно из первых 
+5 примитивов (то есть без использования операции минимизации), то такая функция называется 
+примитивно-рекурсивной. 
+
+\begin{theorem}Следующие функции являются примитивно-рекурсивными:
+сложение, умножение, ограниченное вычитание 
+(которое равно 0, если результат вычитания отрицателен),
+целочисленное деление, остаток от деления, проверка значения на
+простоту.
+\end{theorem}
+
+\begin{proof}Упражнение.\end{proof}
+
+\begin{definition}
+Если $R$ --- $n$-местное отношение, то его \emph{характеристической функцией}
+мы назовем функцию 
+
+$$C_R(x_1,\dots x_n) = \left\{\begin{array}{rl}
+    1, & \mbox{если $(x_1,\dots x_n) \in R$}\\
+    0, & \mbox{если $(x_1,\dots x_n) \notin R$}
+\end{array}\right.$$
+\end{definition}
+
+\begin{definition}
+Рекурсивным отношением называется отношение, характеристическая функция
+которого рекурсивна.
+\end{definition}
+
+\subsection{Рекурсивные, но не примитивно-рекурсивные функции}
+
+Интересен вопрос --- если столь сложные функции, как вычисление простых
+чисел, являются примитивно-рекурсивными, то не достаточно ли их будет
+для вычисления любой функции? А если нет, то каков пример функции, не 
+являющейся примитивно-рекурсивной.
+
+Классическим примером рекурсивной, но не примитивно-рекурсивной, функции 
+является функция Аккермана.
+                    
+\begin{definition}Функцией \emph{Аккермана} мы назовем так определенную 
+функцию:
+
+$$A(m,n) = \left\{\begin{array}{rl}
+   n+1, & \mbox{если $m = 0$}\\
+   A(m-1,1), & \mbox{если $m > 0, n = 0$}\\
+   A(m-1,A(m,n-1)), & \mbox{если $m > 0, n > 0$}
+\end{array}\right.$$
+
+Также нам будет удобно другое обозначение: $\alpha_m(n) = A(m,n)$. 
+Данное обозначение позволяет рассматривать функцию Аккермана как семейство
+функций от одной переменной.
+\end{definition}
+
+\begin{lemma}$\alpha_{m+1}(n) = \alpha^{n+1}_m(1)$.
+\end{lemma}
+\begin{proof}
+Докажем индукцией по $n$. 
+
+База индукции: $\alpha_m(0) = A(m,0) = A(m-1,1) = \alpha^{0+1}_{m-1}(1)$.
+
+Переход: пусть $\alpha_{m+1}(n) = \alpha^{n+1}_m(1)$. Тогда 
+$\alpha_{m+1}(n+1) = A(m+1,n+1) = A(m,A(m+1,n)) = \alpha_m(\alpha^{n+1}_m(1)) = 
+\alpha^{n+2}_m(1)$
+\end{proof}
+
+\begin{lemma}Для функции Аккермана справедливы следующие свойства:
+\begin{enumerate}
+\item Если $m_1 < m_2$, то $A(m_1,n) < A(m_2,n)$
+\item Если $n_1 < n_2$, то $A(m,n_1) < A(m,n_2)$
+\item $\alpha_1(n) = n+2$
+\item $\alpha_2(n) = 2n+3$
+\item $\alpha_{m+2}(n) > \alpha^{n+2}_m(n)$
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Первые четыре свойства достаточно легко показать по индукции. Покажем последнее.
+
+Согласно определению функции Аккермана, и предыдущим пунктам леммы,
+справедлива цепочка равенств и неравенств: 
+$\alpha_{m+2}(n) = \alpha_{m+1}^{n+1}(1) = \alpha_{m+1}(\alpha_{m+1}^n(1)) =
+\alpha_m^{\alpha_{m+1}^n(1)+1}(1) = \alpha_m^{\alpha_{m+2}(n-1)+1}(1)
+\ge \alpha_m^{\alpha_2(n-1)+1}(1) = \alpha_m^{2(n-1)+3+1}(1) =
+ \alpha_m^{n+n+2}(1) = \alpha_m^{n+2} (\alpha_m^{n}(1))$
+%База индукции: $m = 0$. Пусть $inc(x)=x+1$. По определению мы знаем,
+%что $\alpha_0(x)=inc(x)$.
+%Тогда: $\alpha_2(n) = 2n+3$, а $\alpha^{n+1}_0(n) = inc^{n+1}(n) = n+n+1 = 2n+1$. 
+%
+Поскольку $\alpha_m^{n}(1) \ge \alpha_0^{n}(1) = inc^n(1) = n+1$, то
+$\alpha_m^{n}(1) > n$, то есть $\alpha_m^{n+2} (\alpha_m^{n}(1)) > \alpha^{n+2}_m(n)$.
+
+%Переход: пусть мы знаем, что для некоторго $m > 0$ верно, что 
+%$\alpha_{m+2}(n) \ge \alpha^{n+2}_m(n)$. 
+%Покажем, что $\alpha_{m+3}(n) \ge \alpha^{n+2}_{m+1}(n)$.
+%
+%Заметим: $\alpha_{m+3}(n) = \alpha_{m+2}(\alpha_{m+3}(n-1)) \ge
+%\alpha^{\alpha_{m+3}(n-1)+n+2}_m(n)$.
+%С учетом того, что $\alpha_{m+3}(n) \ge \alpha_2(n) = 2n+3$, получим
+%$\alpha_{m+3}(n-1)+2 \ge 2(n-1)+3+2 \ge 2n+3$.
+%А раз так, то $\alpha^{\alpha_{m+3}(n-1)+2}_m(n) \ge 
+%\alpha^{2n+3}_m(n) \ge \alpha^{2n+3}_m(1) = \alpha^{n+2}_m(\alpha^{n+1}_m(1)) =
+%\alpha^{n+2}_m(alpha_{m+1}(n))
+
+
+%$\alpha^{\alpha_{m+3}(n-1)}_{m+1}(1) \ge \alpha^{\alpha_{m+3}(n-1)}_{m-1}(1)
+%\ge 
+%A^{A(R+2,x-1)+1}_{R}(1) \ge \alpha^{A(R+2,x-1)+1}_{N}(1)
+%\ge \alpha^{A(2,x-1)+1}_{N}(1)$.
+%
+%С учетом того, что $A(2,n) = 2n+3$, продолжим:
+%$\alpha^{A(2,x-1)+1}_{N}(1) = \alpha^{2x+2}_{N}(1) \ge
+%\alpha^{2x+1}_{N}(1)$.
+
+%Заметим, что $\alpha^{2x+1}_{N}(1) \ge \alpha^{x+2}_{N}(x) = \alpha_{N+1}(x)$,
+%так как $\alpha_k(x) > x$ - и мы можем, применив функцию
+%$x-1$ раз, увеличить $1$ на $x-1$, получив $x$. 
+%Значит, $A(R+2,x) \ge \alpha_{N+1}(x)$.
+
+\end{proof}
+
+
+Введем обозначение: если задан некоторый набор значений
+$x_1, \dots x_n$, то для упрощения записи будем писать $\overrightarrow{x}$
+вместо него. Например, если задана некоторая функция $f: N^n \rightarrow N$,
+то будем писать $f(\overrightarrow{x})$ вместо $f(x_1,\dots,x_n)$.
+Запись же $g(\overrightarrow{x},y)$ означает, что функция $g$ применяется к
+$n+1$ аргументу: $g(x_1, \dots, x_n, y)$.
+
+\begin{theorem}
+Функция Аккермана растет быстрее любой примитивно-рекурсивной функции. Точнее,
+какова бы ни была примитивно-рекурсивная фукнция $p: N^n \rightarrow N$, 
+мы можем подобрать такую константу $K$, что 
+$p(\overrightarrow{x}) \le \alpha_K(\\max(\overrightarrow{x}))$ 
+при любом $x$. 
+\end{theorem}
+
+\begin{proof}
+Докажем индукцией по структуре формулы, показывающей примитивную 
+рекурсивность $p$.
+Базой будут являться примитивы Z,N и U, для которых утверждение очевидно.
+Покажем переход для примитивов S и R.
+
+Рассмотрим примитив $S$. Пусть $p = S\langle f,g_1,\dots g_m \rangle$,
+где $f, g_1, \dots g_m$ --- это некоторые примитивно-рекурсивные функции, 
+для которых по предположению индукции уже найдены требуемые константы 
+$K_0, K_1 \dots K_m$.
+Тогда возьмем $K = \max (K_0 \dots K_m)+2$, и покажем, что это значение нас
+устроит.
+В самом деле: 
+$$p(\overrightarrow{x}) = f(g_1(\overrightarrow{x}), \dots g_m(\overrightarrow{x}))
+\le \alpha_{K_0}(\max (g_1(\overrightarrow{x}), \dots g_m(\overrightarrow{x})))
+\le \alpha_{K-2}(\max (g_1(\overrightarrow{x}), \dots g_m(\overrightarrow{x})))$$
+В свою очередь, каждый $g_i$ мы можем оценить через соответствующий $\alpha_{K_i}$:
+$$g_i(\overrightarrow{x}) \le \alpha_{K_i}(\max(\overrightarrow{x})) \le \alpha_{K-2}(\max(\overrightarrow{x}))$$
+из чего получается, что 
+$$\alpha_{K-2}(\max (g_1(\overrightarrow{x}), \dots g_m(\overrightarrow{x}))) \le 
+\alpha_{K-2}(\alpha_{K-2}(\max(\overrightarrow{x}))) \le \alpha_{K-2}^{\max(\overrightarrow{x})+2}(\max(\overrightarrow{x}))$$
+Применив свойство из предыдущей леммы, мы можем заключить требуемое:
+$$\alpha_{K-2}^{\max(\overrightarrow{x})+2}(\max(\overrightarrow{x})) < \alpha_K(\max(\overrightarrow{x}))$$
+
+Теперь рассмотрим примитив $R$: $p = R\langle f,g \rangle$,
+причём $f: N^{n-1} \rightarrow N$, и $g: N^{n+1} \rightarrow N$,
+и для них уже найдены константы $K_1$ и $K_2$, соответственно.
+Тогда возьмем $K = \max(K_1, K_2)+2$.
+
+Для доказательства утверждения покажем чуть более сильное утверждение:
+$$p(\overrightarrow{x},y) \le \alpha_{K-2}^{y+1}(\max(\overrightarrow{x},y))$$
+
+Этого достаточно, поскольку 
+$$\alpha_{K-2}^{y+1}(\max(\overrightarrow{x},y)) \le
+\alpha_{K-2}^{\max(\overrightarrow{x},y)+1}(\max(\overrightarrow{x},y)) \le$$
+$$\le \alpha_{K-2}^{\max(\overrightarrow{x},y)+2}(\max(\overrightarrow{x},y)) <
+\alpha_K(\max(\overrightarrow{x},y))$$
+
+Покажем требуемое индукцией по $y$.
+База: $y = 0$. Тогда: $$p(\overrightarrow{x},0) = f(\overrightarrow{x}) \le 
+\alpha_{K_1}(\max(\overrightarrow{x})) = \alpha_{K_1}(\max(\overrightarrow{x},0)) \le 
+\alpha_{K-2}(\max(\overrightarrow{x},0))$$
+
+Переход: пусть $p(\overrightarrow{x},y) \le \alpha^{y+1}_{K-2}(\max(\overrightarrow{x},y))$.
+Тогда $$p(\overrightarrow{x},y+1) = g(\overrightarrow{x},y,p(\overrightarrow{x},y))
+\le \alpha_{K_2}(\max(\overrightarrow{x},y,p(\overrightarrow{x},y))) \le$$
+$$\le \alpha_{K_2}(\max(\overrightarrow{x},y,\alpha^{y+1}_{K-2}(\max(\overrightarrow{x},y))) =$$
+\center{(тут используется монотонность $\alpha$)}
+$$= \alpha_{K_2}(\alpha^{y+1}_{K-2}(\max(\overrightarrow{x},y)))
+%\le \alpha^{y+2}_{K-2}(\max(\overrightarrow{x},y)))\le$$
+\le \alpha^{y+2}_{K-2}(\max(\overrightarrow{x},y+1))$$
+\end{proof}
+
+\begin{theorem}
+Функция Аккермана не является примитивно-рекурсивной.
+\end{theorem}
+
+\begin{proof}
+Пусть это не так, и функция $A(x,y)$ --- примитивно-рекурсивна.
+Тогда рассмотрим $g(x) = A(x,x)$. Эта функция, очевидно, тоже является 
+примитивно-рекурсивной. 
+
+Однако, по предыдущей теореме, найдется такой $N$, что $g(x) \le A(N,x)$
+при любом $x$. В том числе это верно и при $x=N+1$.
+То есть, по предыдущей теореме, $g(N+1) = A(N+1,N+1) \le A(N,N+1)$, 
+однако нам также известно, что $A(N+1,N+1) > A(N,N+1)$.
+\end{proof}
+
+\section{Арифметические отношения и функции. Их выразимость и представимость в формальной арифметике.}
+
+\subsection{Выразимость и представимость}
+
+Введем обозначение. Если в тексте вводится некоторая формула $\alpha(x_1, \dots x_n)$, то
+по умолчанию считается, что эта формула имеет минимум $n$ свободных переменных, с именами
+$x_1, \dots x_n$
+
+Внутри же выражения запись $\alpha (y_1, \dots y_n)$ мы будем трактовать, как 
+$\alpha [x_1 \coloneqq  y_1, ... x_n \coloneqq  y_n]$, при этом
+мы подразумеваем, что $y_1, \dots y_n$ свободны для подстановки вместо $x_1, \dots x_n$ в $\alpha$.
+
+Также, запись $B(x_1, \dots x_n) \equiv \alpha(x_1, \dots x_n)$ будет означать, что мы определяем
+новую формулу с именем $B$ и $n$ свободными переменными $x_1, \dots x_n$. 
+Данная формула должна восприниматься только как сокращение записи, макроподстановка.
+
+\begin{definition}
+Арифметическая функция --- функция $f: N^n \rightarrow N$.
+Арифметическое отношение --- $n$-арное отношение, заданное на $N$.
+\end{definition}
+
+\begin{definition}
+Арифметическое отношение $R$ называется выразимым (в формальной арифметике), если 
+существует такая формула $\alpha (x_1, \dots x_n)$ с $n$ свободными переменными, 
+что для любых натуральных чисел $k_1$ ... $k_n$
+\begin{enumerate}
+\item если $(k_1, \dots k_n) \in R$, то доказуемо $\alpha (\overline{k_1}, \dots \overline{k_n})$
+\item если $(k_1, \dots k_n) \notin R $, то доказуемо $\neg \alpha (\overline{k_1}, \dots \overline{k_n})$.
+\end{enumerate}
+\end{definition}
+
+Например, отношение $(<)$ является выразимым в арифметике:
+Рассмотрим формулу $\alpha (a_1, a_2) = \exists b (\neg b = 0 \with a_1 + b = a_2)$.
+В самом деле, если взять некоторые числа $k_1$ и $k_2$, такие, что $k_1 < k_2$, то найдется
+такое положительное число $b$, что $k_1 + b = k_2$. Можно показать, что если подставить
+$\overline{k_1}$ и $\overline{k_2}$ в $\alpha$, то формула будет доказуема. 
+
+Наметим доказательство:
+Тут должно быть два доказательства по индукции, сперва по $k_2$, потом по $k_1$.
+Рассмотрим доказательство по индукции: пусть $k_1 = 0$, индукция по 2-му параметру:
+Разберем доказательство базы при $k_2 = 1$. Тогда надо показать $\exists b (\neg b = 0 \with 0 + b = 1)$:
+
+\begin{tabular}{lll}
+(1) & $\neg 1 = 0 \with 0 + 1 = 1$ & Несложно показать\\
+(2) & $(\neg 1 = 0 \with 0 + 1 = 1) \rightarrow \exists b (\neg b = 0 \with 0 + b = 1)$ & Cх. акс. для $\exists$\\
+(3) & $\exists b (\neg b = 0 \with 0 + b = 1)$ & M.P. 1 и 2.
+\end{tabular}
+
+\begin{definition} Введем следующее сокращение записи:
+пусть $\exists ! y \phi (y)$ означает $$\exists y \phi (y) \with \forall a \forall b (\phi(a) \with \phi(b) \rightarrow a=b)$$
+Здесь $a$ и $b$ --- некоторые переменные, не входящие в формулу $\phi$ свободно.
+\end{definition}
+
+\begin{definition} Арифметическая функция $f$ от $n$ аргументов называется представимой в 
+формальной арифметике, если существует такая формула $\alpha (x_1, \dots x_{n+1})$ с $n+1$ 
+свободными пременными, что для любых натуральных чисел $k_1$ ... $k_{n+1}$
+\begin{enumerate}
+\item $f(k_1, \dots k_n) = k_{n+1}$ тогда и только тогда, когда доказуемо 
+$\alpha (\overline{k_1}, \dots \overline{k_{n+1}})$.
+\item Доказуемо $\exists ! b (\alpha (\overline{k_1}, \dots \overline{k_n}, b)$
+\end{enumerate}
+\end{definition} 
+
+%$$f(x) = \left\{\begin{array}{rl}
+%   \{x\}, & \mbox{если $P(x)$}\\
+%   \emptyset, & \mbox{если $\neg P(x).$}
+%\end{array}\right.
+
+\subsection{Представимость рекурсивных функций}
+
+\begin{theorem} Функции $Z$, $N$, $U^n_i$ являются представимыми. \end{theorem}
+\begin{proof}
+Наметим доказательство. Для этого приведем формулы, доказательство корректности этих 
+формул оставим в виде упражнения.
+\begin{itemize}
+\item Примитив $Z$ представит формула $Z (a, b) \coloneqq  (a=a \with b=0)$.
+\item Примитив $N$ представит формула $N (a, b) \coloneqq  (a' = b)$.
+\item Примитив $U^n_i$ представит формула $U^n_i (a_1, ...a_n, b) = (a_1=a_1) \with ... \with (a_n=a_n) \with (b= a_i)$.
+\end{itemize}
+\end{proof}
+
+\begin{theorem} Если функции $f$ и $g_1$, ... $g_m$ представимы, 
+то функция $S\langle{}f,g_1,\dots g_m\rangle$ также представима. \end{theorem}
+\begin{proof}Поскольку функции $f$ и $g_i$ представимы, то есть формулы $F$ и $G_1, \dots G_m$,
+их представляющие. Тогда следующая формула представит $S\langle{}f,g_1,\dots g_m\rangle$: 
+$$S (a_1, \dots a_n, b) \coloneqq  \exists b_1 \dots \exists b_m 
+  (G_1 (a_1, \dots a_n, b_1) \with \dots \with G_m (a_1, \dots a_n, b_m) \with F (b_1, \dots b_m, b))$$
+\end{proof}
+
+\begin{definition}
+$\beta$-функция Геделя - это функция $\beta (b,c,i) = b \% (1 + c \cdot (i + 1))$. Здесь операция (\%) означает
+взятие остатка от целочисленного деления.
+\end{definition}
+
+\begin{lemma}Функция примитивно-рекурсивна, и при этом представима в арифметике 
+формулой $B (b,c,i,d) \coloneqq  \exists q ((b = q \cdot (1 + c \cdot (i+1)) + d) \with (d < 1 + c \cdot (i+1)))$
+\end{lemma}
+\begin{proof}Упражнение.\end{proof}
+
+\begin{theorem}Китайская теорема об остатках.
+Если $u_1, \dots u_n$ --- попарно взаимно простые целые числа,
+и $k_1, \dots k_n$ --- целые числа, такие, что $0 \le k_i < u_i$
+при любом $i$, то найдется такое целое число $b$, что
+$k_i = b \% u_i$ при любом $i$.
+\end{theorem}
+
+Доказательство этой теоремы по индукции несложно, но не входит в наш курс. 
+
+\begin{lemma} 
+Для любой конечной последовательности чисел $k_0$ ... $k_n$ можно подобрать
+такие константы $b$ и $c$, что $\beta (b,c,i) = k_i$ для $0 \le i \le n$.
+\end{lemma}
+
+\begin{proof}
+Возьмем число $c = \max(k_1,\dots k_n,n)!$. Рассмотрим числа $u_i = 1 + c \cdot (i+1)$. 
+
+\begin{itemize}
+
+\item Никакие числа $u_i$ и $u_j$ $(0 \le j < i \le n)$ не имеют общих делителей кроме 1.
+Пусть это не так, и есть некоторый общий делитель $p$ (очевидно, мы можем предположить его
+простоту --- разложив на множители, если он составной).
+Тогда $p$ будет делить $u_i - u_j = c \cdot (i - j)$,
+при этом $p$ не может делить $c$ --- иначе окажется, что $u_i = (1 + c \cdot (i+1))$ делится на $p$
+и $c \cdot (i+1)$ делится на $p$. Значит, $p$ делит $i-j$, то есть все равно делит $c$, так как
+$c$ --- факториал некоторого числа, не меньшего $n$, и при этом $i-j \le n$.
+
+\item Каждое из чисел $k_i$ меньше, чем $u_i$: в самом деле, $k_i \le c < 1 + c \cdot (i+1) = u_i$.
+
+Из полученных утверждений видно, что выполнены условия китайской 
+теоремы об остатках.
+Следовательно, найдется такое целое число $b$, для которого 
+выполнено $k_i = b \% u_i$, то есть $k_i = \beta (b,c,i)$.
+\end{itemize}
+\end{proof}
+
+\begin{theorem}Всякая рекурсивная функция представима в арифметике.\end{theorem}
+\begin{proof}
+Представимость первых четырех примитивов уже показана. Покажем представимость примитивной рекурсии и 
+операции минимизации.
+
+\emph{Примитивная рекурсия.} Пусть есть некоторый $R \langle{} f,g \rangle$. Соответственно, $f$ и $g$ уже 
+представлены как некоторые формулы $F$ и $G$. Из определения $R\langle{}f,g\rangle$ мы знаем,
+что для значения $R \langle{} f,g \rangle (x_1,...x_{n+1})$ должна существовать последовательность
+$a_0 ... a_{x_{n+1}}$ результатов применения функций f и g --- значений на одно больше, чем 
+итераций в цикле примитивной рекурсии,
+а это количество определяется последним параметром функции $R \langle{}f,g\rangle$. При этом:
+
+\begin{tabular}{l}
+$a_0 = f(x_1, \dots x_n)$\\
+$a_1 = g(x_1, \dots x_n,0,a_0)$\\
+...\\
+$a_{x_{n+1}} = g(x_1, \dots x_n, x_{n+1}-1,a_{x_{n+1}-1})$
+\end{tabular}
+
+Значит, по лемме, должны существовать такие числа $b$ и $c$, что
+$\beta (b,c,i) = a_i$ для $0 \le i \le x_{n+1}$.
+
+Приведенные рассуждения позволяют построить следующую формулу, представляющую $R\langle{}f,g\rangle (x_1, ... x_{n+1})$:
+
+\begin{center}
+$R(x_1, \dots x_{n+1}, a) \coloneqq  \exists b \exists c (\exists k (B (b,c,0,k) \with F (x_1,...x_n, k))$\\
+       $\;\;\;\with B (b,c,x_{n+1},a)$\\
+       $\;\;\;\with \forall k (k < x_{n+1} \rightarrow \exists d \exists e (B (b,c,k,d) \with B (b,c,k',e) \with
+           G (x_1,..x_n,k,d,e))))$
+\end{center}
+
+\emph{Минимизация.} Рассмотрим конструкцию $\mu\langle{}f\rangle$. $f$ уже представлено 
+как некоторая формула $F$. Тогда формула 
+$M (x_1, \dots x_n,y) \coloneqq  F(x_1, \dots x_n,y,0) \with \forall z (z < y \rightarrow \neg F (x_1, \dots x_n,z,0))$
+представит $\mu\langle{}f\rangle$.
+\end{proof}
+
+\begin{theorem}Всякое рекурсивное арифметическое отношение выразимо в формальной арифметике.\end{theorem}
+\begin{proof}Рассмотрим характеристическую функцию $C_R$ некоторого рекурсивного отношения $R$. Данная функция 
+(как любая другая рекурсивная функция) представима в формальной арифметике --- пусть
+ее представляет формула $\rho(x_1, \dots x_n, y)$. Тогда 
+формула $\rho (x_1, \dots x_n, \overline{1})$ выразит соответствующее отношение.
+
+В самом деле, если $(k_1,\dots k_n) \in R$ для некоторых $k_i$, то
+$\vdash \rho(\overline{k_1}, \dots \overline{k_n}, \overline{1})$.
+
+Обратно, пусть $(k_1,\dots k_n) \notin R$. Из представимости $C_R$ известно
+$$\vdash \exists ! y\rho(\overline{k_1}, \dots \overline{k_n}, y)$$
+то есть, в частности,
+$$\vdash \forall y_1 \forall y_2 (\rho(\overline{k_1}, \dots \overline{k_n}, y_1) \with \rho(\overline{k_1}, \dots \overline{k_n}, y_2) \rightarrow y_1 = y_2)$$
+что можно преобразовать в
+$$\vdash \rho(\overline{k_1}, \dots \overline{k_n}, 0) \rightarrow (\rho(\overline{k_1}, \dots \overline{k_n}, \overline{1}) \rightarrow \overline{1} = 0)$$
+Поскольку $\vdash \rho(\overline{k_1}, \dots \overline{k_n}, 0)$ доказуемо вследствие представимости $C_R$,
+то мы можем далее вывести
+$$\vdash \rho(\overline{k_1}, \dots \overline{k_n}, \overline{1}) \rightarrow \overline{1} = 0$$
+и, заметив, что $\vdash\neg \overline{1} = 0$, в итоге покажем требуемое для выразимости
+$$\vdash \neg\rho(\overline{k_1}, \dots \overline{k_n}, \overline{1})$$
+\end{proof}

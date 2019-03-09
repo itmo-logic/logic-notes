@@ -1,0 +1,344 @@
+\section{1я и 2я теоремы Геделя о неполноте арифметики}
+
+\begin{definition}Мы будем называть теорию непротиворечивой, если
+не найдется такой формулы $\alpha$, что доказуемо как $\alpha$, так и $\neg \alpha$.
+\end{definition}
+
+\begin{lemma}
+Если теория противоречива, то в ней доказуема любая формула.
+\end{lemma}
+\begin{proof}
+Если теория противоречива, то в ней есть утверждение $\alpha$, что доказуемо $\alpha$ и $\neg \alpha$.
+Воспользуемся общезначимой (и потому доказуемой) формулой исчисления высказываний 
+$\alpha \rightarrow \neg \alpha \rightarrow \beta$.
+\end{proof}
+
+\begin{definition}Мы будем называть теорию $\omega$-непротиворечивой,
+если, какова бы ни была формула $P(x)$ со свободной переменной $x$, 
+такая, что для любого натурального числа $p$ доказуемо $P(\overline{p})$, 
+то формула $\exists p \neg P(p)$ недоказуема.
+\end{definition}
+
+\begin{lemma}
+$\omega$-непротиворечивость влечёт непротиворечивость.
+\end{lemma}
+
+\begin{proof}
+Рассмотрим выводимую формулу $x=x \rightarrow x=x$.
+При подстановке любого натурального числа вместо $x$
+формула будет по-прежнему выводима: $\overline{k} = \overline{k} \rightarrow \overline{k}=\overline{k}$.
+Значит, по $\omega$-непротиворечивости формула $\exists p \neg (x=x \rightarrow x=x)$ невыводима.
+Значит, теория непротиворечива (поскольку в противоречивой теории выводится любая формула).
+\end{proof}
+
+Определим рекурсивное отношение $W_1(x,p)$,
+истинное тогда и только тогда, когда $x$ есть гёделев номер некоторой формулы
+$\phi$ с единственной свободной переменной $x$, а $p$ есть гёделев номер 
+доказательства $\phi(\gq{\phi})$ --- доказательства 
+самоприменения $\phi$. 
+Это соотношение является выразимым в формальной арифметике. В самом деле, его можно задать
+с помощью рекурсивных отношений, введённых ранее:
+$$W_1(x,p) := \mathit{Free}(x,\gq{x}) \with \mathit{Proof} (\mathit{Sub}(x,\gq{x},\mathit{Num}(x)),p)$$
+В силу выразимости рекурсивных отношений в формальной арифметике, для неё найдётся 
+формула $\omega_1(x,p)$, причём, если $\langle x, p \rangle \in W_1$, то 
+доказуемо $\omega_1(\overline{x},\overline{p})$, а если $\langle x, p \rangle \notin W_1$, то уже 
+доказуемо $\neg\omega_1(\overline{x},\overline{p})$.
+
+Рассмотрим формулу $\sigma \equiv \forall p \neg \omega_1(x,p)$ --- это некоторая формула
+с единственной свободной переменной $x$ --- и посмотрим, что произойдёт с её самоприменением:
+$\sigma(\overline{\gq\sigma})$. Внимательное наблюдение за
+происходящим даст следующую теорему.
+
+\begin{theorem}{Первая теорема Гёделя о неполноте арифметики.}
+
+1. Если формальная арифметика непротиворечива, то недоказуемо $\sigma(\overline{\gq\sigma})$.
+
+2. Если формальная арифметика $\omega$-непротиворечива, то недоказуемо $\neg \sigma(\overline{\gq\sigma})$.
+\end{theorem}
+
+\begin{proof}
+1. Пусть $\vdash \sigma(\overline{\gq\sigma})$. Тогда найдется гёделев номер ее 
+доказательства $p$, значит, $W_1(\gq\sigma,p)$, то есть $\vdash \omega_1 (\overline{\gq\sigma},\overline{p})$. 
+С другой стороны, пользуясь схемой аксиом для квантора всеобщности и правилом Modus Ponens, из 
+предположения теоремы $\vdash \sigma(\overline{\gq\sigma})$ 
+(то есть $\vdash \forall p \neg \omega_1(\overline{\gq\sigma},p)$)
+можно показать $\vdash \neg \omega_1(\overline{\gq\sigma},\overline{p})$. 
+Противоречие.
+
+2. Пусть $\vdash \neg \sigma(\overline{\gq\sigma})$, то есть 
+$\vdash \neg \forall p \neg \omega_1(\overline{\gq\sigma},p)$,
+то есть $\vdash \exists p \omega_1(\overline{\gq\sigma},p)$.
+Значит, неизбежно найдется такой номер $q$, что
+$\vdash \omega_1 (\overline{\gq\sigma},\overline{q})$, поскольку 
+если бы для каждого $q$ было бы доказуемо $\vdash \neg \omega_1 (\overline{\gq\sigma},\overline{q})$,
+то по $\omega$-непротиворечивости было бы недоказуемо
+$\exists p \neg\neg \omega_1(\overline{\gq\sigma},p)$.
+
+Рассмотрев же определение $W_1$, можно заметить, что найденный $q$ также есть
+номер доказательства $\sigma(\overline{\gq\sigma})$, что
+вступает в противоречие с предположением $\vdash \neg \sigma(\overline{\gq\sigma})$.
+\end{proof}
+
+Формула $\sigma(\overline{\gq\sigma})$, говоря простым языком, утверждает 
+собственную недоказуемость. Мы показали, что эта формула (при условии 
+$\omega$-непротиворечивости формальной арифметики) действительно 
+недоказуема --- что означает её общезначимость. Таким образом, мы 
+показали, что если формальная арифметика $\omega$-непротиворечива, 
+то она неполна.
+
+В данном рассуждении используется сложное понятие
+$\omega$-непротиворечивости, что смущает. Теорема Гёделя в форме 
+Россера снимает эту сложность.
+
+Рассмотрим отношение $W_2 (x,p)$ --- $x$ и $p$ состоят в отношении $W_2$ тогда и только тогда, когда
+$p$ - гёделев номер доказательства \emph{отрицания} самоприменения $x$ (если $\phi$ --- формула от
+одной переменной $x$, то $p$ --- номер доказательства $\neg \phi(\overline{\gq\phi})$). 
+Мы также можем выразить его в формальной арифметике аналогично $\omega_1$
+(обозначим выражающую формулу за $\omega_2$).
+
+Тогда рассмотрим формулу $\rho(x) \equiv \forall p (\omega_1 (x,p) \rightarrow \exists q (q < p \with \omega_2 (x,q)))$.
+Неформальным языком она утверждает, что для любого доказательства самоприменения некоторой 
+формулы с номером $a$ найдется доказательство (да еще и с меньшим гёделевым номером) 
+отрицания этой формулы. Ну и по традиции применим ее к своему номеру $r$. 
+Внимательное рассмотрение этой ситуации приводит к следующей теореме.
+
+\begin{theorem}{Теорема Гёделя в форме Россера.}
+Если формальная арифметика непротиворечива, то не доказуема как формула $\rho(\ogq{\rho})$, так и её отрицание.
+\end{theorem}
+
+Докажем эту теорему, рассмотрев вспомогательную лемму:
+\begin{lemma}
+Каково бы ни было число $n$, доказуемы следующие утверждения:
+\begin{itemize}
+\item $\vdash a \le \overline{n} \rightarrow (a=\overline{0} \vee a=\overline{1} \vee \dots \vee a=\overline{n})$ 
+\item $\vdash (a=\overline{0} \vee a=\overline{1} \vee \dots \vee a=\overline{n}) \rightarrow a\le\overline{n}$ 
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+Импликации доказываются индукцией по $n$. Мы не будем предлагать подробного доказательства
+(в силу его размера и технического характера), наметим только несколько шагов. Доказательство
+значительно объемнее, но делается достаточно похоже.
+
+Докажем первую импликацию. Рассмотрим индукцию по $b$ на мета-языке.
+
+База. $n=0$. Тогда $a \le \overline{n}$ после подстановки $b$ и раскрытия определения отношения <<меньше>> 
+превращается в $\exists b (a + b = 0)$. 
+Нам нужно показать, что $\vdash \exists b (a+b = 0) \rightarrow a=0$ 
+
+Утверждение может быть получено применением правила введения $\exists$ из
+более простого: $\vdash a + b = 0 \rightarrow a = 0$.
+
+Докажем данное утверждение индукцией по $b$ в предметном языке --- 
+применив схему аксиом индукции.
+
+Рассмотрим сокращение записи: $A(b) \equiv a + b = 0 \rightarrow a=0$
+Тогда следующее выражение --- аксиома (по схеме А9):
+$A(0) \with \forall b (A(b) \rightarrow A(b')) \rightarrow A(b)$.
+Если показать $A(0)$ и $\forall b (A(b) \rightarrow A(b'))$, то из
+этого по правилу M.P. будет нетрудно получить необходимое $A(b)$.
+
+Покажем $A(0)$.
+
+\begin{tabular}{lll}
+$(1..l)$ & $a + 0 = 0 \rightarrow a + 0 = a \rightarrow a = 0$ & Акс. А2 + переим.\\
+$(l+1)$ & $a + 0 = a \rightarrow a + 0 = 0 \rightarrow a + 0 = a$ & Сх. акс. 1\\
+$(l+2)$ & $a + 0 = a$ & Акс. А6\\
+$(l+3)$ & $a + 0 = 0 \rightarrow a+0=a$ & M.P.\\
+$(l+4..m)$ & $a + 0 = 0 \rightarrow a = 0$ & Сх. акс. 2 + M.P.\\
+\end{tabular}
+
+Теперь покажем $A(b)\rightarrow A(b')$. 
+
+\begin{tabular}{lll}
+$(1)$ & $a + b' = (a+b)' \rightarrow a+b' = 0 \rightarrow (a+b)' = 0$ & Сх. акс. 1\\
+$(2)$ & $a+b' = 0 \rightarrow (a+b)' = 0$ & Акс. А5\\
+$(3..k)$ & $a+b' = 0 \rightarrow \neg (a+b)' = 0$ & Акс. А4 + замена пер. + ослабление\\
+$(k+1)$ & $(a+b' = 0 \rightarrow (a+b)' = 0) \rightarrow $ &\\
+& $(a+b' = 0 \rightarrow \neg (a+b)' = 0) \rightarrow$ &\\
+& $(\neg a+b' = 0)$ &\\
+$(l)$ & $\neg a+b' = 0 $ & M.P. 2 раза \\
+$(l+1..m)$ & $(a + b' = 0) \rightarrow (\neg a+b' = 0) \rightarrow (a=0)$ & Инт. сх. акс. 10 \\
+$(m+1..p)$ & $(a + b' = 0) \rightarrow (a=0)$ & Сх. акс. 2 + M.P. 2 раза\\
+$(p+1..q)$ & $(a + b = 0 \rightarrow a = 0) \rightarrow (a + b' = 0 \rightarrow a = 0)$ & Ослабление
+\end{tabular}
+
+%Теперь покажем индукционный переход:
+%
+%$\exists b (a + b = \overline{x}) \rightarrow (a = 0 \vee a = 1 \vee \dots \vee a = \overline{x}),
+%\exists b (a + b = \overline{x}') \vdash (a = 0 \vee a = 1 \vee \dots \vee a = \overline{x}')$.
+
+%\exists b (a + b = \overline{x}) \rightarrow (a = 0 \vee a = 1 \vee \dots \vee a = \overline{x})
+%a + b = \overline{x} \rightarrow \exists b (a + b = \overline{x})
+%a + b = \overline{x} \rightarrow (a = 0 \vee a = 1 \vee \dots \vee a = \overline{x})
+%a + b = \overline{x}' \rightarrow 
+
+%p = q' \rightarrow \exists r (r' = q')
+%A(0): \neg q' = 0
+%\neg 0 = q'
+%0 = q' \rightarrow \neg 0 = q' \rightarrow \exists p (p' = q')
+
+%A(n): 
+%p' = q' \rightarrow \exists p (p' = q') & Сх. акс. 12
+%(p = q' \rightarrow \exists p (p' = q')) \rightarrow (p' = q' \rightarrow \exists p (p' = q')) & Ослабление
+
+\end{proof}
+
+
+\begin{proof}
+
+Теперь приступим к теореме Геделя. Пусть $\vdash \rho(\ogq{\rho})$, т.е.
+%т.е. $\forall p (\omega_1 (\ogq{\rho},p) \rightarrow \exists q (q < p \with \omega_2 (\ogq{\rho},q)))$
+%истинно. 
+%Значит, есть такой $p$, что $\exists q (y < q \with \omega_2 (\ogq{\rho},q))$ истинно.
+%Значит, найдется такой $q < p$, что $W_2 (\gq{\rho},q)$ истинно, т.е., что 
+%$q$ --- номер опровержения $\phi$, что влечёт за собой противоречивость арифметики.
+
+%Покажем недоказуемость $\phi$. Пусть $\vdash \rho(\overline{\gq\rho})$, т.е. 
+$\vdash \forall p (\omega_1 (\overline{\gq\rho},p) \rightarrow \exists q (q < p \with \omega_2 (\overline{\gq\rho},q)))$.
+У этого доказательства есть некоторый номер $t$, причем $\omega_1 (\overline{\gq\rho},\overline{t})$.
+Несложно показать $\vdash (\omega_1 (\overline{\gq\rho},\overline{t}) \rightarrow \exists q (q < \overline{t} \with \omega_2 (\overline{\gq\rho},q)))$.
+По построению формулы $\vdash \omega_1 (\overline{\gq\rho},\overline{t})$, откуда, соединив
+доказательства воедино, и применив правило Modus Ponens, получим 
+$\vdash \exists q (q < \overline{t} \with \omega_2 (\overline{\gq\rho},q)))$.
+
+Так как теория непротиворечива, то не существует вывода формулы 
+$\forall p (\omega_1 (\overline{\gq\rho},p) \rightarrow \exists q (q < p \with \omega_2 (\overline{\gq\rho},q)))$.
+Поэтому $W_2 (\gq{\rho}, q)$ ложно при любом $q$. Значит, по выразимости $W_2$, 
+$\vdash \neg \omega_2 (\ogq{\rho}, q)$ для любого $q$, в том числе и для $q < t$.
+Отсюда можно показать, что 
+$\vdash \neg \omega_2(\ogq{\rho},\overline{0}) \with \neg \omega_2(\ogq{\rho},\overline{1}) \with \dots \with \neg \omega_2(\ogq{\rho},\overline{t-1})$
+Применив лемму мы получаем, что 
+$\forall q (q < \overline{t} \rightarrow \neg \omega_2(\ogq{\rho},q))$,
+от этого же можно перейти к
+$\neg \exists q (q < \overline{t} \with \omega_2(\ogq{\rho},q))$.
+
+Обратно, пусть $\vdash \neg \rho(\ogq{\rho})$. Пусть $t$ - гёделев номер доказательства.
+Раз так, то $W_2 (\gq{\rho},t)$ истинно. По непротиворечивости формальной арифметики
+это значит, что $W_1 (\gq{\rho},p)$ при любом $p$ ложно (иначе окажется, что 
+найдутся как доказательство, так и опровержение $\rho(\ogq{\rho})$). 
+Значит, доказуемо $\neg \omega_1 (\ogq{\rho},\overline{p})$ при 
+любом $p$ (т.е. никакой из $p$ не является доказательством $\rho(\ogq{\rho})$). 
+Как частный случай, $\neg \omega_1 (\ogq{\rho},\overline{x})$ доказуемо для
+всех $x$, не превышающих $t$, поэтому 
+$\vdash \neg \omega_1 (\ogq{\rho},\overline{0}) \with \neg \omega_1 (\ogq{\rho},\overline{1}) \with ... \with \neg \omega_1 (\ogq{\rho},\overline{t})$.
+Отсюда можно показать $\vdash p \le \overline{t} \rightarrow \neg \omega_1 (\ogq{\rho},p)$.
+
+Рассмотрим формулу $(p > \overline{t}) \rightarrow \exists q (q < p \with \omega_2 (\ogq{\rho},q))$
+Формула утверждает следующее: <<если некоторый $p$ больше $t$, то найдется
+такой $q$, меньший $p$, что $W_2 (\gq{\rho},q)$>>. Очевидно, что данная формула истинна,
+ведь если мы возьмем $t$ в качестве такого $q$, то $W_2 (\gq{\rho},t)$ истинно 
+по предположению. В силу выразимости $W_2$ в формальной арифметике формула также и доказуема.
+
+Легко показать, что из этих утверждений и из того, что $p \le \overline{t} \vee p > \overline{t}$,
+можно вывести $\neg \omega_1 (\ogq{\rho},p) \vee \exists q (q < p \with \omega_2 (\ogq{\rho},p))$,
+а отсюда - $\forall p (\omega_1 (\ogq{\rho},p) \rightarrow \exists q (q < p \with \omega_2 (\ogq{\rho},q)))$,
+то есть $\vdash\rho(\ogq{\rho})$. Однако, мы предположили $\vdash\neg\rho(\ogq{\rho})$, и исходя из него,
+вывели $\rho(\ogq{\rho})$, т.е. показали противоречивость формальной арифметики. Значит, 
+$\neg \rho(\ogq{\rho})$ также недоказуемо, если арифметика непротиворечива.
+\end{proof}
+
+Выберем утверждение, которое показывает непротиворечивость арифметики, т.е. 
+показывает отсутствие такой формулы $\phi$, что и $\phi$ и $\neg \phi$ доказуемы.
+Поскольку в противоречивой теории можно вывести любое утверждение, нам
+достаточно проверить это для какого-то конкретного $\phi$, пусть это будет
+$1=0$. Ясно, что $\neg 1=0$ доказуемо.
+ Тогда для доказательства непротиворечивости арифметики нам достаточно
+доказать $\forall p (\neg \mathit{Proof} (\overline{\gq{1=0}}, p))$. Обозначим это утверждение
+за $\mathit{Consis}$.
+
+\begin{theorem}{Вторая теорема Гёделя о неполноте арифметики.}
+Если арифметика непротиворечива, то в ней не существует доказательства $\mathit{Consis}$.
+\end{theorem}
+
+\begin{proof}
+Рассмотрим формулу $\mathit{Consis} \rightarrow \sigma(\overline{\gq\sigma})$.
+Данная формула в точности соответствует условию первой части первой теоремы Гёделя 
+о неполноте арифметики: 
+если арифметика непротиворечива, то самоприменение формулы $\sigma$ истинно, т.е.
+недоказуемо; напомним, что $\sigma(x) \equiv \forall p \neg \omega_1 (x,p)$.
+
+Рассуждение, доказывающее теорему Гёделя, можно формализовать, получив доказательство
+данной импликации. Теперь, если у нас будет доказательство утверждения $\mathit{Consis}$,
+то по правилу Modus Ponens мы также получаем доказательство утверждения 
+$\sigma (\gq\sigma)$, что невозможно по первой теореме Гёделя.
+\end{proof}
+
+В данном месте есть очень поучительный пример, показывающий важность 
+формализации, и существенность деталей, которые мы опустили в доказательстве
+второй теоремы о неполноте. В самом деле, вместо формулы $\mathit{Consis}$ мы могли бы 
+попробовать рассмотреть формулу 
+$\mathit{Proof1}(a) \coloneqq  \mathit{Proof} (a,x) \with \neg(\mathit{Proof} (\gq{1=0},x))$
+и построить по ней формулу
+$\mathit{Consis1} \coloneqq  \forall x \neg \mathit{Proof1} (\gq{1=0},x)$ 
+На первый взгляд, замена равноценна: действительно, 
+если арифметика непротиворечива, то тогда $\mathit{Proof1}$ ничем не отличается от $\mathit{Proof}$,
+поскольку $1=0$ тогда действительно недоказуема. Если же арифметика противоречива,
+то $\mathit{Consis1}$ доказуема, как и любая другая формула.
+
+Однако, $\mathit{Consis1}$ легко доказать. Пусть $\pi(x) \equiv \mathit{Proof}(\gq{0=1},x)$, тогда:
+
+\begin{tabular}{lll}
+(1..n) & $\neg (\pi(x) \with \neg (\pi(x)))$ & Доказуемо в и.в.\\
+(n+1) & $\neg a=0$ & Аксиома А.x\\
+(n+2) & $\neg (\pi(x) \with \neg (\pi(x))) \rightarrow \neg a=0 \rightarrow \neg (\pi(x) \with \neg (\pi(x)))$ & Сх. акс. 1\\
+(n+3) & $\neg a=0 \rightarrow \neg (\pi(x) \with \neg (\pi(x)))$ & M.P. $n$,$n+2$\\
+(n+4) & $\neg a=0 \rightarrow \forall x \neg (\pi(x) \with \neg (\pi(x)))$ & Введение $\forall$ к $n+3$\\
+(n+5) & $\forall x \neg (\pi(x) \with \neg \pi(x))$ & M.P. $n+1$, $n+4$
+\end{tabular}
+
+Получается, что мы здесь, продолжив рассуждение в соответствии со второй теоремой,
+можем сразу получить противоречие и показать противоречивость арифметики?
+На самом деле нет, поскольку мы некритично обобщили вторую теорему на 
+случай формулы $\mathit{Consis1}$, тогда как она существенно использует внутреннее устройство $\mathit{Consis}$. 
+У $\mathit{Consis1}$ ведь есть <<слепое пятно>> --- формула $1=0$, на которой его результат не вычисляется,
+а постулируется, и это значительное отличие. 
+
+Чтобы абстрагироваться от конкретного вида $\mathit{Consis}$, Гильбертом и Бернайсом были
+предложены следующие условия выводимости, позволяющие считать, что формула действительно
+выражает непротиворечивость арифметики. Мы приведем их в более позднем варианте,
+сформулированном Лёфом.
+
+Пусть $\mathit{Consis} \equiv \neg \mathit{Provable} (\gq{1=0})$. Тогда $\mathit{Provable}$ должно отвечать следующим
+свойствам:
+
+\begin{enumerate}
+\item $\vdash \alpha$ влечет $\vdash \mathit{Provable}(\gq{\alpha})$
+\item $\vdash \mathit{Provable} (\gq{\alpha}) \rightarrow \mathit{Provable}(\gq{\mathit{Provable}(\gq{\alpha})})$
+\item $\vdash \mathit{Provable} (\gq{\alpha\rightarrow \beta})\rightarrow \mathit{Provable}(\gq{\alpha}) \rightarrow \mathit{Provable}(\gq{\beta})$
+\end{enumerate}
+
+Заметим, что в случае $\mathit{Provable1}(a) = \exists x (\mathit{Proof} (a,x) \with \neg \mathit{Proof} (\gq{1=0},x))$
+у нас будут сложности с демонстрацией третьего правила. 
+Анализ таблицы истинности импликации (вместе с полнотой и.в.)
+указывает, что чтобы показать 
+$$\vdash \mathit{Provable}1 (\gq{2=0\rightarrow 1=0}) \rightarrow \mathit{Provable1} (\gq{2=0}) \rightarrow \mathit{Provable1} (\gq{1=0})$$
+нам надо показать $\vdash \neg \mathit{Provable1} (\gq{2=0})$,
+поскольку $\vdash \mathit{Provable1} (\gq{2=0\rightarrow 1=0})$ и $\vdash \neg \mathit{Provable1} (\gq{1=0})$. 
+То есть, мы получим эту импликацию, только если покажем доказуемость непротиворечивости формальной арифметики
+(ведь $\vdash \neg \mathit{Provable1} (\gq{2=0})$ --- это тоже вариант $\mathit{Consis}$).
+
+Если бы речь шла об обычной формуле $\mathit{Provable}$, мы бы решили вопрос следующим неформальным, но формализуемым
+доказательством:
+если существует $x$, такой, что $\mathit{Proof} (\gq{2=0},x)$, 
+и существует $y$, что $\mathit{Proof}(\gq{2=0\rightarrow 1=0},y)$, 
+то выполнено и $\mathit{Proof} (\gq{1=0},x @ y @ \gq{1=0})$.
+
+%\begin{tabular}{lll}
+%(1) & $\exists x \mathit{Proof}(\gq{2=0},x)$ & Предположение 1\\
+%(2) & $\exists y \mathit{Proof}(\gq{2=0\rightarrow 1=0},y)$ & Предположение 2\\
+%(3..p) & $\exists x \exists y (\mathit{Proof} (\gq{2=0},x) \with \mathit{Proof}(\gq{2=0\rightarrow 1=0},y))$ & Доказуемо\\
+%(..) & Конкретное доказательство не привести, но оно существует по свойствам $\mathit{Proof}$ &\\
+%(p+1..k) & $ \exists x \exists y (\mathit{Proof} (\gq{2=0},x) \with \mathit{Proof}(\gq{2=0\rightarrow 1=0},y) \rightarrow \mathit{Proof} (\gq{1=0}, x @ y @ \gq{1=0}))$\\
+%(k+1..l) & $ \exists x \exists y (\mathit{Proof} (\gq{2=0},x) \with \mathit{Proof}(\gq{2=0\rightarrow 1=0},y) \rightarrow \exists p \mathit{Proof} (\gq{1=0}, p))$\\
+%(l+1..m) & $ \exists x \exists y (\exists p \mathit{Proof} (\gq{1=0}, p))$\\
+%\end{tabular}
+
+В случае же с $\mathit{Provable1}$ нам все равно необходимо показывать $\vdash \neg \mathit{Provable1} (\gq{1=0})$.
+
+Мы можем, конечно, указать общее соображение: если бы было верно $\mathit{Provable1} (\gq{2=0})$, то 
+тогда было бы верно $\vdash 2=0$, значит, теория противоречива и найдется доказательство чего угодно, 
+в том числе и $\vdash \mathit{Provable1} (\gq{1=0})$, значит, выполнено $\neg \mathit{Provable1} (\gq{2=0})$.
+Но это рассуждение касается только значений формулы $\mathit{Provable1}$, сформулировано на мета-языке, 
+и непонятно, как из него сделать формальное доказательство $\vdash \neg \mathit{Provable1} (\gq{2=0})$.
+

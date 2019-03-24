@@ -26,15 +26,39 @@
 Связок в языке мы определим 4 (хотя при необходимости этот список может быть
 в любой момент изменен).
 \begin{itemize}
-\item конъюнкция: если $\alpha$ и $\beta$ --- высказывания, то $\alpha \with \beta$ --- тоже высказывание.
-\item дизъюнкция: если $\alpha$ и $\beta$ --- высказывания, то $\alpha \vee \beta$ --- тоже высказывание.
-\item импликация: если $\alpha$ и $\beta$ --- высказывания, то $\alpha \rightarrow \beta$ --- тоже высказывание.
+\item конъюнкция: если $\alpha$ и $\beta$ --- высказывания, то ($\alpha \with
+  \beta$), ($\alpha \land \beta$) --- тоже высказывание.
+\item дизъюнкция: если $\alpha$ и $\beta$ --- высказывания, то ($\alpha \vee
+  \beta$) --- тоже высказывание.
+\item импликация: если $\alpha$ и $\beta$ --- высказывания, то ($\alpha
+  \rightarrow \beta$), ($\alpha \supset \beta$) --- тоже высказывание.
 \item отрицание: если $\alpha$ --- высказывание, то $\neg\alpha$ --- тоже высказывание.
 \end{itemize}
 
-Высказывания, подробности
-которых нас не интересуют, мы будем обозначать начальными буквами греческого алфавита
-($\alpha$, $\beta$, $\gamma$ и т.п.).
+При этом $\alpha$ и $\beta$ называются мета-переменными, они являются частью
+мета-языка ИВ. В нем мета-переменные для пропозициональных переменных
+обозначаются заглавными последними буквами латинского алфавита, а другие
+мета-переменные, являющиеся высказываниями --- строчными начальными буквами греческого алфавита. В мета-языке
+запись короче и удобнее.
+
+В отличие от мета-языка, в языке исчисления высказываний важно расставление
+скобок, указывающих на приоритет выполнения операций, наиболее приоритетные
+операции помещаются в скобки, а так же сохраняется их ассоциативность.
+
+При переходе к мета-языку, есть возможность опускать некоторые скобки, приоритет
+операций которых задается самой логической связкой. Такие сокращения действуют по следующим
+правилам:
+\begin{enumerate}
+  \item Приоритет (в порядке уменьшения) : $\neg$, $\with$, $\vee$, $\rightarrow$
+  \item Ассоциативность:
+    \begin{itemize}
+      \item $\with$, $\vee$ --- левоассоциативны
+      \item $\rightarrow$ --- правоассоциативна
+    \end{itemize}
+  \end{enumerate}
+  
+  
+
 
 \subsection{Оценка высказываний}
 
@@ -50,44 +74,58 @@
 неожиданный смысл связкам, однако, классическая интерпретация связок всегда будет
 подразумеваться, если не указано иного.
 
-Среди высказываний выделяются те, что остаются истинными при любой оценке пропозициональных
-переменных. Такие высказывания называют \emph{тавталогиями} или \emph{общезначимыми высказываниями}.
-Также, на языке исследователя общезначимость высказывания $\alpha$ можно кратко 
-записать как $\models \alpha$. 
-
 Оценку высказываний мы будем записывать с помощью двойных квадратных скобок. Например,
 нетрудно видеть, что $\llbracket P \rightarrow P \rrbracket = \texttt{И}$.
 Если нам требуется явно задать значения некоторых пропозициональных переменных, мы будем
-записывать эти значения как верхний индекс: $\llbracket P \rightarrow Q \rrbracket ^ {P\coloneqq \texttt{Л}} = \texttt{И}$.
+записывать эти значения как верхний индекс: $\llbracket P \rightarrow Q
+\rrbracket ^ {P\coloneqq \texttt{Л}} = \texttt{И}$.
+
+\begin{definition} \emph{Тавтологией} или \emph{общезначимым высказыванием}
+  называют такое высказывание $\alpha$, у которого $\llbracket \alpha \rrbracket
+  = \texttt{И}$ при любой оценке пропозициональных переменных. Также, на языке исследователя общезначимость высказывания $\alpha$ можно кратко записать как $\models \alpha$. 
+\end{definition}
+
+\begin{definition} \emph{Следование}.
+Если $\gamma_1 \dots \gamma_n : \llbracket \gamma_1 \rrbracket = \texttt{И} \dots
+\llbracket \gamma_n \rrbracket = \texttt{И}$ влечет $\llbracket \alpha
+\rrbracket = \texttt{И}$,  тогда $\alpha$ \emph{следует} из $\gamma_1 \dots
+\gamma_n$ (обозначается $\gamma_1 \dots \gamma_n \models \alpha$) 
+\end{definition}
+
+\begin{definition} Формула \emph{выполнимая}, если есть значения
+  пропозициональных переменных, когда ее оценка истинна. \emph{Невыполнимая}
+  --- наоборот.
+\end{definition}
+
 
 \subsection{Доказательства}
 
 В любой теории есть некоторые утверждения (аксиомы), которые принимаются без доказательства.
 В исчислении высказываний мы должны явно определить список всех возможных аксиом. 
-Например, мы можем взять утверждение $A \with B \rightarrow A$ в качестве аксиомы.
-Однако, есть множество аналогичных утверждений, например, $B \with A \rightarrow B$,
+Например, мы можем взять утверждение $Z \with X \rightarrow Z$ в качестве аксиомы.
+Однако, есть множество аналогичных утверждений, например, $X \with Z \rightarrow X$,
 которые не отличаясь по сути, отличаются по записи, и формально говоря, являются другими
 утверждениями.
 
 Для решения вопроса мы введём понятие \emph{схемы аксиом} --- некоторого обобщённого
 шаблона, подставляя значения в который, мы получаем различные, но схожие аксиомы. 
-Например, схема аксиом $\psi \with \phi \rightarrow \psi$ позволяет получить как
-аксиому $A \with B \rightarrow A$ (при подстановке $\psi \coloneqq  A, \phi \coloneqq  B$), так и
-аксиому $B \with A \rightarrow B$.
+Например, схема аксиом $\alpha \with \beta \rightarrow \alpha$ позволяет получить как
+аксиому $Z \with X \rightarrow Z$ (при подстановке $\alpha \coloneqq  Z, \beta
+\coloneqq  X$), так и аксиому $X \with Z \rightarrow X$.
 
 Возьмем следующие схемы аксиом для исчисления высказываний.
 
 \begin{tabular}{ll}
-(1) & $(\phi) \rightarrow ((\psi) \rightarrow (\phi))$ \\
-(2) & $((\phi) \rightarrow (\psi)) \rightarrow ((\phi) \rightarrow (\psi) \rightarrow (\pi)) \rightarrow ((\phi) \rightarrow (\pi))$ \\
-(3) & $(\phi) \rightarrow (\psi) \rightarrow (\phi) \with (\psi)$\\
-(4) & $(\phi) \with (\psi) \rightarrow (\phi)$\\
-(5) & $(\phi) \with (\psi) \rightarrow (\psi)$\\
-(6) & $(\phi) \rightarrow (\phi) \vee (\psi)$\\
-(7) & $(\psi) \rightarrow (\phi) \vee (\psi)$\\
-(8) & $((\phi) \rightarrow (\pi)) \rightarrow ((\psi) \rightarrow (\pi)) \rightarrow ((\phi) \vee (\psi) \rightarrow (\pi))$\\
-(9) & $((\phi) \rightarrow (\psi)) \rightarrow ((\phi) \rightarrow \neg (\psi)) \rightarrow \neg (\phi)$\\
-(10) & $\neg \neg (\phi) \rightarrow (\phi)$
+(1) & $\alpha \rightarrow \beta \rightarrow \alpha$ \\
+(2) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \beta \rightarrow \gamma) \rightarrow (\alpha \rightarrow \gamma)$ \\
+(3) & $\alpha \with \beta \rightarrow \alpha$\\
+(4) & $\alpha \with \beta \rightarrow \beta$\\
+(5) & $\alpha \rightarrow \beta \rightarrow \alpha \with \beta$\\
+(6) & $\alpha \rightarrow \alpha \vee \beta$\\
+(7) & $\beta \rightarrow \alpha \vee \beta$\\
+(8) & $(\alpha \rightarrow \gamma) \rightarrow (\beta \rightarrow \gamma) \rightarrow (\alpha \vee \beta \rightarrow \gamma)$\\
+(9) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \neg \beta) \rightarrow (\neg \alpha)$\\
+(10) & $\neg \neg \alpha \rightarrow \alpha$
 \end{tabular}
 
 Помимо аксиом, нам требуется каким-то образом научиться преобразовывать одни верные утверждения
@@ -119,4 +157,4 @@ $\alpha_k$ совпадает с $\alpha$.
 чтобы сказать, что $\alpha$ доказуемо.
 
 Традиционно правило вывода Modus Ponens записывают так:
-$$\infer{\psi}{\phi & (\phi) \rightarrow (\psi)}$$
+$$\infer{\beta}{\alpha & \alpha \rightarrow \beta}$$

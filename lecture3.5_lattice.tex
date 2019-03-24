@@ -8,23 +8,28 @@
 В интуиционистской логике (в отличие от классической) отсутствует доказуемость этого утверждения $\alpha \vee \neg \alpha $.
 Как доказать то, что это высказывание недоказуемо?:  Можно перебрать все доказательства, которых бесконечное количество, как-то подумать и понять это. Сложно. Давайте воспользуемся так называемым <<модельным доказательством>>. Мы предложим такой способ оценки высказываний в интуиционистской логике, при этом что чтобы но позволял оценивать совершенно спокойно оценивать по всем аксиомам логики, при этом доказательство не будет выполнено. Для этого введём следующее понятие:
 
-\begin{definition} частично упорядоченное множество $\langle{}A, \sqsubseteq  \rangle$ ---  \emph{решётка}, если
+\begin{definition} Частично упорядоченное множество $\langle{}A, \sqsubseteq  \rangle$ "---  \emph{решётка}, если:
 	
-	\begin{tabular}{ll}
-		(1) & $\forall a,b \in A \quad \exists$ наименьший $c: \quad a \sqsubseteq c$ и $b \sqsubseteq c $ (Обозначение $a+b$)\\
-		(2) & $\forall a,b \in A \quad \exists$ наибольший $c: \quad c \sqsubseteq a$ и $c \sqsubseteq b$ (Обозначение $a \cdot b$)
-	\end{tabular}
+	\begin{enumerate}
+		\item $\forall a,b \in A ~ \exists$ наименьший $c: a \sqsubseteq c$ и $b \sqsubseteq c $ (обозначение $a+b$);
+		\item $\forall a,b \in A ~ \exists$ наибольший $c: c \sqsubseteq a$ и $c \sqsubseteq b$ (обозначение $a \cdot b$).
+	\end{enumerate}
+Эти $c$ называют точными верхними и нижними гранями соответственно.
 \end{definition}
-Заметим, что минимальный/максимальный --- это не одно и то же, что наименьший/наибольший. В первом случае предполагается, что элементы могут быть несравнимы, а в нашей ситуации все элементы сравнимы между собой, <<настоящий минимум>> \\
+Заметим, что минимальный (максимальный) "--- это не одно и то же, что наименьший (наибольший). В первом случае предполагается, что элементы могут быть несравнимы, а в нашей ситуации все элементы сравнимы между собой, <<настоящий минимум>>. 
+
 Жизненный пример: 2 этажа в доме. Определим, что один этаж больше другого, если он над ним. Есть наибольший этаж в каждом доме, но нет наибольшего этажа для всего мира.
 
 
 Пример решетки: $\langle{} \mathbb{R}, \leq \rangle$
-$$a + b = max(a,b)$$
-$$a \cdot b = min(a,b)$$
+\begin{gather*}
+a + b = \max (a,b) \\
+a \cdot b = \min (a,b) \\
+\end{gather*}
 
 
-Пример не решетки:
+
+Пример множества, не являющегося решёткой:
 \begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}[->,>={Stealth[black]}, every edge/.style={draw=black,thick}]
@@ -35,27 +40,27 @@ $$a \cdot b = min(a,b)$$
 	\path (A)  edge (B) (A)  edge (C);
 	\end{tikzpicture}
 	\caption{$a  \sqsubseteq b $ обозначается стрелочкой из $a$ в $b$} 
-	$$a = b + c$$
-	$$??? = b \cdot  c$$
+	\label{not-a-lattice}
+	Это множество не является решёткой, потому что для $b$ и $c$ не выполняется второй пункт из определения решётки.
 \end{figure}
 
 Ещё пример:\\
-$X$ -- множество множеств какого-то множества $T$
-$a \sqsubseteq b , a,b \in X$, если $a \subseteq b $ \\
-Это решётка:
-$$a + b = a \cup b$$
-$$a \cdot b = a \cap b $$
+$X$ "--- множество множеств какого-то множества $T$.
+$a \sqsubseteq b , a,b \in X$, если $a \subseteq b $. Это решётка:
+\begin{gather*}
+a + b = a \cup b \\
+a \cdot b = a \cap b 
+\end{gather*}
 
-\begin{definition} \emph{Дистрибутивная решётка} --- это  $\langle{}X, \sqsubseteq  \rangle$, в которой дополнительно выполнено следующее свойство:
-	$$ \forall a,b,c  \quad a+b \cdot c = (a+b)\cdot(a+c)$$
+
+\begin{definition} \emph{Дистрибутивная решётка} "--- это  $\langle{}X, \sqsubseteq  \rangle$, в которой дополнительно выполнено следующее свойство:
+	\[\forall a,b,c  \quad a+b \cdot c = (a+b)\cdot(a+c)\] 
 	
 \end{definition}
 
-\begin{lemma} В дистрибутивной решетке так же выполнено
-	$a \cdot (b+c) = ab + ac$
+\begin{lemma} В дистрибутивной решетке так же выполнено $a \cdot (b+c) = ab + ac$.
 \end{lemma}
 
-Пример дистрибутивной решетки: 
 \begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}[->,>={Stealth[black]}, every edge/.style={draw=black,thick}]
@@ -70,20 +75,29 @@ $$a \cdot b = a \cap b $$
 	(B)  edge (D)
 	(C)  edge (D);
 	\end{tikzpicture}
+	\caption{Пример дистрибутивной решетки}
+	\label{distr-lattice}
 \end{figure}
 
-Но гораздо интреснее понять когда множество не является решеткой
+Но гораздо интереснее понять, когда множество не является решеткой.
 
-\begin{definition}
-	Фигура \emph{диамант}
-	\begin{figure}[ht]
+\begin{theorem}
+	Решётка дистрибутивна, когда она не содержит диамантов и пентагонов (рисунок \ref{diamant} и \ref{pentagon}).
+	% Возможно избыточное пояснение "Не содержит" имеется в виду выделение этих 5 вершин как подграфа, в котором нет других отношений, кроме стрелочек
+\end{theorem}
+
+
+
+\begin{figure} [ht]
+	\centering
+	\begin{minipage}{0.45\textwidth}
 		\centering
 		\begin{tikzpicture}[->,>={Stealth[black]}, every edge/.style={draw=black,thick}]
-		\node at (-0.5,   2) (A)  {};
-		\node at (-1.5, 0) (B)  {};
-		\node at (0, 0) (C)  {};
-		\node at (1.5, 0.3) (D)  {};
-		\node at (0, -2.5) (E)  {};
+		\node at (-0.5,   2) (A)  {$a$};
+		\node at (-1.5, 0) (B)  {$b$};
+		\node at (0, 0) (C)  {$c$};
+		\node at (1.5, 0.3) (D)  {$d$};
+		\node at (0, -2.5) (E)  {$e$};
 		
 		\path 
 		(A)  edge (B) 
@@ -93,20 +107,17 @@ $$a \cdot b = a \cap b $$
 		(C)  edge (E)
 		(D)  edge (E);
 		\end{tikzpicture}
-	\end{figure}
-\end{definition}
-
-
-\begin{definition}
-	Фигура \emph{пентагон}
-	\begin{figure}[ht]
+		\caption{Фигура \emph{диамант}}
+		\label{diamant}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\textwidth}
 		\centering
 		\begin{tikzpicture}[->,>={Stealth[black]}, every edge/.style={draw=black,thick}]
-		\node at (0,   0) (A)  {};
-		\node at (-2, -2) (B)  {};
-		\node at (2, -1.8) (C)  {};
-		\node at (2, -4) (D)  {};
-		\node at (0.1, -6) (E)  {};
+		\node at (0,   0) (A)  {$a$};
+		\node at (-2, -2) (B)  {$b$};
+		\node at (2, -1.8) (C)  {$c$};
+		\node at (2, -4) (D)  {$d$};
+		\node at (0.1, -6) (E)  {$e$};
 		
 		\path 
 		(A)  edge (B) 
@@ -116,20 +127,18 @@ $$a \cdot b = a \cap b $$
 		(B)  edge (E)
 		(D)  edge (E);
 		\end{tikzpicture}
-	\end{figure}
-\end{definition}
-
-\begin{theorem}
-	Решётка дистрибутивна, когда она не содержит диамантов и пентагонов.% Возможно избыточное пояснение "Не содержит" имеется в виду выделение этих 5 вершин как подграфа, в котором нет других отношений, кроме стрелочек
-\end{theorem}
+		\caption{Фигура \emph{пентагон}}
+		\label{pentagon}
+	\end{minipage}
+\end{figure}
 
 \begin{definition}
-	\emph{Импликативная решётка } --- это дистрибутивная решётка, в которой определено псевдодополнение \\
+	\emph{Импликативная решётка } "--- это дистрибутивная решётка, в которой определено псевдодополнение. 
 	
-	$c = a \to b$ -- \emph{псевдодополнение} (не путать с импликацией), если $c=max \{x | x \cdot a \sqsubseteq b \}$, где $max$ - взятие наибольшего элемента
+	$c = a \to b$ "--- \emph{псевдодополнение} (не путать с импликацией), если $c=\max \{x \mid x \cdot a \sqsubseteq b \}$, где $\max$ "--- взятие наибольшего элемента.
 \end{definition}
 
-Рассмотрим вот такую решетку и посчитаем в ней всякое разное:
+Рассмотрим вот такую решетку (рисунок \ref{wise-example}) и посчитаем в ней всякое разное:
 \begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}[->,>={Stealth[black]}, every edge/.style={draw=black,thick}]
@@ -144,86 +153,100 @@ $$a \cdot b = a \cap b $$
 	(B)  edge (D)
 	(C)  edge (D);
 	\end{tikzpicture}
+	\caption{}
+	\label{wise-example}
 \end{figure}
 
 \begin{itemize}
-	\item $(x \to 0) = max \{t | t \cdot x \sqsubseteq 0 \} = y$
-	\item $(x \to 1) = max \{t | t \cdot x \sqsubseteq 1 \} = 1$
+	\item $(x \to 0) = \max \{t \mid t \cdot x \sqsubseteq 0 \} = y$
+	\item $(x \to 1) = \max \{t \mid t \cdot x \sqsubseteq 1 \} = 1$
 	\item $(x \to x) = 1$	- на что x ни умножай, он меньше либо равен самого себя
-	\item $(1 \to x) = max \{t | t \sqsubseteq x \} = x$
-	\item $(0 \to x) = max \{t | 0 \cdot t \sqsubseteq x \} = 1$	
+	\item $(1 \to x) = \max \{t \mid t \sqsubseteq x \} = x$
+	\item $(0 \to x) = \max \{t \mid 0 \cdot t \sqsubseteq x \} = 1$	
 \end{itemize}
 Обратите внимание на первый пункт. Почему такой ответ? Потому что подходят $y$ (т.к $y \cdot x = 0, 0 \sqsubseteq 0$) и $0$, при этом $0 \sqsubseteq y $. Осознав это можно, интуитивно понять почему решётка, содержащая диамант, недистрибутивна.
 
 \begin{theorem}
-	Решётка + псевдодополнение --- дистрибутивная решётка. То есть явно выписанное требование дистрибутивности в определении импликативной решетки было избыточным
+	Решётка c определенной операцией псевдодополнения "--- дистрибутивная решётка. То есть явно выписанное требование дистрибутивности в определении импликативной решетки было избыточным.
 \end{theorem}
 
 \begin{definition} 
-	Единица (1) в решетке --- наибольший элемент. 
-	Ноль (0) в решетке --- наименьший элемент. 
+	Единица (1) в решетке "--- наибольший элемент. 
+	Ноль (0) в решетке "--- наименьший элемент. 
 \end{definition}
 
 \begin{theorem}
-	В импликативной решетке есть 1
+	В импликативной решетке есть 1.
 \end{theorem}
 \begin{proof}
-	Пусть решётка не пуста. Рассмотрим произвольный элемент $k$ \\
-	$k \to k = 1$ \\
-	$1 = max \{t | k \cdot t \sqsubseteq k \} $ \\
-	Но любой элемент решетки таков, что  $k \cdot t \sqsubseteq k$ (определение $\cdot$)
+	Пусть решётка не пуста. Рассмотрим произвольный элемент $k$. 
+	\begin{gather*}
+	k \to k = 1 \\
+	1 = \max \{t \mid k \cdot t \sqsubseteq k \}
+	\end{gather*}
+	
+	Но любой элемент решетки таков, что  $k \cdot t \sqsubseteq k$ (определение $\cdot$).
+	
 	Значит, 1 - наибольший элемент среди всех, что есть в решетке.
 \end{proof}
 
 
 \section{Псевдобулева алгебра}
 \begin{definition}
-	\emph{Псевдобулева алгебра} или \emph{алгебра Гейтинга} --- это импликативная решётка с $0$-ём
+	\emph{Псевдобулева алгебра} или \emph{алгебра Гейтинга} "--- это импликативная решётка с $0$-ём.
 \end{definition}
-В псевдобулевой алгебре можно рассмотреть \emph{операцию отрицания}, которая определениется, как псевдодополнение до нуля.
-$$~a \equiv	a \to 0$$
+В псевдобулевой алгебре можно рассмотреть \emph{операцию отрицания}, которая определяется, как псевдодополнение до нуля.
+\[\sim a \equiv	a \to 0\]
 
 \begin{definition}
-	\emph{Булева алгебра} --- это такая псевдобулева алгебра, что $ a + ~a = 1$ при любом $a$
+	\emph{Булева алгебра} "--- это такая псевдобулева алгебра, что $ a + \sim a = 1$ при любом $a$.
 \end{definition}
 Пример:  $\langle{}X, \Omega \rangle$ - топологическое пространство. $(\Omega, \leq)$ является псевдобулевой алгеброй. \\
-Утверждение: не все псевдобулевы алгебры --- булевы. \\
-Пример: $\mathbb{R}$ с классической топологией (Евклидово пространство)
-$$(-\infty,0) \to \varnothing = (0, +\inf)$$
-Но $$(-\infty,0) \cup  (0, +\inf) \ne \mathbb{R}$$
+Утверждение: не все псевдобулевы алгебры "--- булевы. \\
+Пример: $\mathbb{R}$ с классической топологией (Евклидово пространство):
+\[(-\infty,0) \to \varnothing = (0, +\infty)\]
+Но: \[(-\infty,0) \cup  (0, +\infty) \ne \mathbb{R}\]
 
-%$\varnothing_{12}$	
-\begin{definition} Оценка для алгебры Гейтинга $\langle{}X, \sqsubseteq \rangle$ \\
-	Будем считать, что $\vdash \alpha$, если $ \llbracket \alpha \rrbracket = 1$ при любой оценке переменных
-	Определим смысл связок: \\
-	$\llbracket \alpha \with \beta \rrbracket = \llbracket \alpha \rrbracket \cdot \llbracket \beta \rrbracket$\\
-	$\llbracket \alpha \vee \beta \rrbracket = \llbracket \alpha \rrbracket + \llbracket \beta \rrbracket$\\
-	$\llbracket \alpha \rightarrow \beta \rrbracket = \llbracket \alpha \rrbracket \rightarrow \llbracket \beta \rrbracket $\\
-	$\llbracket \neg \alpha \rrbracket = \thinspace \sim \llbracket \alpha \rrbracket $
+\begin{definition} Оценка для алгебры Гейтинга $\langle{}X, \sqsubseteq \rangle$ : 
+	
+	Будем считать, что $\vdash \alpha$, если $ \llbracket \alpha \rrbracket = 1$ при любой оценке переменных. 
+	
+	Определим смысл связок: 
+	\begin{gather*}
+	\llbracket \alpha \with \beta \rrbracket = \llbracket \alpha \rrbracket \cdot \llbracket \beta \rrbracket \\
+	\llbracket \alpha \vee \beta \rrbracket = \llbracket \alpha \rrbracket + \llbracket \beta \rrbracket \\
+	\llbracket \alpha \rightarrow \beta \rrbracket = \llbracket \alpha \rrbracket \rightarrow \llbracket \beta \rrbracket \\
+	\llbracket \neg \alpha \rrbracket = \thinspace \sim \llbracket \alpha \rrbracket 
+	\end{gather*}
+
 \end{definition}
 
 \begin{theorem}
 	Так определенная оценка корректна.
 \end{theorem}
 \begin{proof}
-	Д/З
+	Д/З.
 \end{proof}
 \begin{theorem}
-	$ \nvdash_{intuitionistic} \alpha \vee \neg \alpha$
+	$ \nvdash_{intuitionistic} \alpha \vee \neg \alpha$.
 \end{theorem}
 \begin{proof} [Доказательство (модельное)] 
-	Возьмём алгебру Гейтинга построюннную на $\mathbb{R}$ \\
-	Возьмём $\llbracket \alpha \rrbracket : = (-\infty, 0)$ \\
-	Тогда $\llbracket \alpha \vee \neg \alpha \rrbracket = \mathbb{R} \setminus \{0\} \neq \mathbb{R} $ \\
-	Т.е. $\nvDash \alpha \vee \neg \alpha$ \\
-	Значит, по теореме о корректности $ \nvdash_{intuitionistic} \alpha \vee \neg \alpha$
+	Возьмём алгебру Гейтинга построеннную на $\mathbb{R}$. 
+	
+	Возьмём $\llbracket \alpha \rrbracket : = (-\infty, 0)$. 
+	
+	Тогда $\llbracket \alpha \vee \neg \alpha \rrbracket = \mathbb{R} \setminus \{0\} \neq \mathbb{R} $. 
+	
+	Т.е. $\nvDash \alpha \vee \neg \alpha$. 
+	
+	Значит, по теореме о корректности $ \nvdash_{intuitionistic} \alpha \vee \neg \alpha$.
 \end{proof}
 
 \begin{definition}
 	$B$ - булева алгебра, $\alpha$ - классическое исчисление высказываний \\
-	$ \vDash \alpha$, если $ \llbracket \alpha \rrbracket = 1$ при любой оценки переменных
+	$ \vDash \alpha$, если $ \llbracket \alpha \rrbracket = 1$ при любой оценки переменных.
 \end{definition}
 
 \begin{theorem}
-	Если $\vdash_{classic} \alpha$, то 	$ \vDash \alpha$
+	Если $\vdash_{classic} \alpha$, то 	$ \vDash \alpha$.
 \end{theorem}

@@ -83,14 +83,14 @@ $$\alpha\to\alpha\to\neg\beta\vee\beta\with\neg\alpha\vee\neg\beta\to\alpha\with
   = \texttt{И}$ при любой оценке пропозициональных переменных. Также, на языке исследователя общезначимость высказывания $\alpha$ можно кратко записать как $\models \alpha$. 
 \end{definition}
 
-\begin{definition} \emph{Следование}.
+\begin{definition}[следование] \emph{Следование}.
 Если $\gamma_1 \dots \gamma_n : \llbracket \gamma_1 \rrbracket = \texttt{И} \dots
 \llbracket \gamma_n \rrbracket = \texttt{И}$ влечет $\llbracket \alpha
 \rrbracket = \texttt{И}$,  тогда $\alpha$ \emph{следует} из $\gamma_1 \dots
 \gamma_n$ (обозначается $\gamma_1 \dots \gamma_n \models \alpha$) 
 \end{definition}
 
-\begin{definition} Формула \emph{выполнимая}, если есть значения
+\begin{definition}[выполнимость] Формула \emph{выполнимая}, если есть значения
   пропозициональных переменных, когда ее оценка истинна. \emph{Невыполнимая}
   "--- наоборот.
 \end{definition}
@@ -133,7 +133,7 @@ $$\alpha\to\alpha\to\neg\beta\vee\beta\with\neg\alpha\vee\neg\beta\to\alpha\with
 считать доказанной формулу $\beta$. Традиционно правило вывода Modus Ponens записывают так:
 $$\infer{\beta}{\alpha & \alpha \rightarrow \beta}$$
 
-\begin{definition} \emph{Доказательство} в исчислении высказываний "--- 
+\begin{definition}[доказательство] \emph{Доказательство} в исчислении высказываний "--- 
 это некоторая конечная последовательность выражений 
 $\alpha_1$, $\alpha_2$ \dots $\alpha_n$
 из языка $L$, такая, что каждое из утверждений $\alpha_i (1 \le i \le n)$
@@ -142,7 +142,7 @@ $\alpha_1$, $\alpha_2$ \dots $\alpha_n$
 ($P_1 \dots P_k < i$) по правилу вывода.
 \end{definition}
 
-\begin{definition} Высказывание $\alpha$ называется доказуемым, если 
+\begin{definition}[доказуемость] Высказывание $\alpha$ называется доказуемым, если 
 существует доказательство $\alpha_1$, $\alpha_2$ \dots $\alpha_k$, и в нем
 $\alpha_k$ совпадает с $\alpha$. 
 \end{definition}
@@ -158,7 +158,7 @@ $\alpha_k$ совпадает с $\alpha$.
 Соглашение об обозначениях. Будем обозначать буквами 
 $\Gamma, \Delta, \Sigma, \Pi$ списки формул (возможно, пустые).
 
-\begin{definition}{Вывод из допущений.}
+\begin{definition}[вывод из допущений] \emph{Вывод из допущений.}
 Пусть $\Gamma$ "--- некоторый список высказываний, а $\alpha$ "--- 
 некоторое высказывание. 
 Тогда мы будем говорить, что высказывание $\alpha$ \emph{выводимо} из $\Gamma$ 
@@ -178,3 +178,43 @@ $\Gamma, \Delta, \Sigma, \Pi$ списки формул (возможно, пу�
 
 В свете данного определения можно заметить, что доказательство "--- это
 вывод из пустого списка допущений. 
+
+
+Для примера докажем следующую лемму, которая понадобится нам в будущем:
+\begin{lemma}
+$\vdash \alpha \rightarrow \alpha$
+\end{lemma}
+
+\begin{proof}\ 
+
+\begin{tabular}{lll}
+(1) & $\alpha \rightarrow (\alpha \rightarrow \alpha)$&Сх. акс. 1\\
+(2) & $(\alpha \rightarrow (\alpha \rightarrow \alpha)) \rightarrow 
+  (\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
+  (\alpha \rightarrow \alpha)$&Сх. акс. 2\\
+(3) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
+  (\alpha \rightarrow \alpha)$&M.P. 1,2\\
+(4) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha))$ & Сх. акс. 1\\
+(5) & $\alpha \rightarrow \alpha$ & M.P. 4,3\\
+\end{tabular}\ 
+
+\end{proof}
+
+И приведем пример доказательства с контекстом:
+\begin{lemma}
+  $\beta \vdash \alpha \to \alpha \with \beta$
+\end{lemma}
+
+\begin{proof}\
+
+\begin{tabular}{lll}
+(1) & $\beta$ & Гипотеза 1 \\
+(2) & $ \beta \to \alpha \to \beta $ & Сх. акс. 1 \\
+(3) & $ \alpha \to \beta $ &M.P. 2,1 \\
+(4) & $ \alpha \to \beta \to \alpha \with \beta $ &Cх. акс. 5 \\
+(5) & $(\alpha \to \beta) \to (\alpha \to \beta \to \alpha \with \beta) \to \alpha \to \alpha \with \beta $ &Сх. акс. 2\\
+(6) & $(\alpha \to \beta \to \alpha \with \beta) \to \alpha \to \alpha \with \beta $ & M.P. 5,3\\
+(7) & $\alpha \to \alpha \with \beta $ &M.P. 6,4\\
+\end{tabular}\
+
+\end{proof}

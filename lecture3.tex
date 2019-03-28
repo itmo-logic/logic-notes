@@ -7,24 +7,6 @@
 
 Для доказательства рассмотрим следующую лемму:
 
-\begin{lemma}
-$\vdash \alpha \rightarrow \alpha$
-\end{lemma}
-
-\begin{proof}\ 
-
-\begin{tabular}{lll}
-(1) & $\alpha \rightarrow (\alpha \rightarrow \alpha)$&Сх. акс. 1\\
-(2) & $(\alpha \rightarrow (\alpha \rightarrow \alpha)) \rightarrow 
-  (\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
-  (\alpha \rightarrow \alpha)$&Сх. акс. 2\\
-(3) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
-  (\alpha \rightarrow \alpha)$&M.P. 1,2\\
-(4) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha))$ & Сх. акс. 1\\
-(5) & $\alpha \rightarrow \alpha$ & M.P. 4,3\\
-\end{tabular}\ 
-
-\end{proof}
 
 \begin{proof}[Доказательство теоремы \ref{deduction_theorem}]
 

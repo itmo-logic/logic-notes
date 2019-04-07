@@ -1,0 +1,174 @@
+\section{Алгебра Линденбаума}
+
+В этой главе условимся считать, что мы работаем с 
+интуционистским исчислением высказываний (ИИВ), $\alpha$ и $\beta$ - 
+произвольные пропозициональные формулы.
+Для задания алгебры Линденбаума дадим несколько определений:
+
+\begin{definition}
+$\alpha \sqsubseteq \beta$ (находится в отношении частичного порядка), 
+если $\alpha \vdash \beta$
+\end{definition}
+
+\begin{definition}
+$\alpha \approx \beta$ (эквивалентно), если $\alpha \sqsubseteq \beta$
+и $\beta \sqsubseteq \alpha$
+\end{definition}
+
+Рассмотрим класс эквивалентности $\alpha$, обозначив его как $[\alpha]_{\approx}$
+
+\begin{definition}
+$[\alpha]_{\approx} \sqsubseteq [\beta]_{\approx}$, если $\alpha \sqsubseteq \beta$
+\end{definition}
+
+\begin{definition}
+$[\alpha]_{\approx} = [\beta]_{\approx}$, если $\alpha \approx \beta$
+\end{definition}
+
+
+Теперь можем дать определение:
+\begin{definition}
+ИИВ с заданными на нём классами эквивалентности называется \emph{алгеброй Линденбаума}
+(и обозначается как $\mathcal{L}$)
+\end{definition}
+
+\begin{lemma}
+Алгебра Линденбаума является алгеброй Гейтинга.
+\end{lemma}
+
+\textbf{Пример.} ${\llbracket A \rrbracket}_{\mathcal{L}} = [A]$
+
+\begin{consequence}
+Алгебра Линденбаума полна как модель ИИВ.
+\end{consequence}
+\begin{proof}
+$\models \alpha$, значит ${\llbracket \alpha \rrbracket}_{\mathcal{L}} = 1$.
+
+Из примера выше: ${\llbracket \alpha \rrbracket}_{\mathcal{L}} = 
+	[A \rightarrow A]_{\approx}$, т.е. $A \rightarrow A \sqsubseteq \alpha$.
+	
+С одной стороны получаем, что $A \rightarrow A \vdash \alpha$. С другой стороны мы 
+знаем доказательство $\vdash A \rightarrow A$. Соединив вместе, получаем, что $\vdash \alpha$. Что и означает полноту алгебры Линденбаума.
+\end{proof}
+
+Теперь рассмотрим основные понятия, связанные с гёделевыми алгебрами.
+
+\begin{definition}
+Алгебра Гейтинга называется \emph{гёделевой}, если $\forall a, b: a + b = 1$
+	влечёт $a = 1$ или $b = 1$.
+\end{definition}
+
+\begin{definition}
+Исчисление дизъюнктивно, если из $\vdash \alpha \lor \beta$ следует $\vdash \alpha$
+или $\vdash \beta$.
+\end{definition}
+
+\begin{definition}
+\emph{Гёделевизация} алгебры $A$.
+
+
+Пусть множество $A$ с отношением $\leq$ является алгеброй Гейтинга, 
+и пусть $\omega \in A$. На множестве $A \cup {\omega}$
+определим отношение $\leq$, положив для любых $a, b, \in A: a \leq \omega$,
+если $a \neq 1$; $a \leq b \iff a \leq_{A} b$; $\omega \leq 1$. Проделанная операция есть гёделевизация
+(Gödelization) алгебры $A$ и обозначается $\Gamma(A)$.
+\end{definition}
+
+\begin{lemma}
+$\Gamma(A)$ - гёделева алгебра.
+\end{lemma}
+
+\begin{proof}
+$1 = a + b$. Если $a < 1$ и $b < 1$, то $a + b \leq \omega$ - противоречие.
+\end{proof}
+
+\begin{lemma}
+$\Gamma(A)$ - алгебра Гейтинга.
+\end{lemma}
+
+\begin{definition}
+
+$f: \Gamma(A) \rightarrow A$
+
+$f(1_{\Gamma(A)}) = f(\omega) = 1_{A}$
+
+$f(X) = X$
+\end{definition}
+
+\begin{lemma}
+
+$f(a + b) = f(a) + f(b)$
+
+$f(a \cdot b) = f(a) \cdot f(b)$
+
+$f(a \rightarrow b) = f(a) \rightarrow f(b)$
+
+$f(1) = 1$
+\end{lemma}
+
+\begin{lemma}
+${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} \neq 1$, тогда и только тогда, когда 
+${\llbracket \alpha \rrbracket}_{\mathcal{L}} \neq 1$
+\end{lemma}
+
+\begin{theorem}
+Таким образом, алгебра Линденбаума - гёделева.
+\end{theorem}
+\begin{proof}
+Пусть $\vdash \alpha \lor \beta$.
+
+${\llbracket \alpha \rrbracket}_{\mathcal{L}} + {\llbracket \beta \rrbracket}_{\mathcal{L}} = 1_{\mathcal{L}}$.
+
+${\llbracket \alpha \lor \beta \rrbracket}_{\mathcal{L}} = 1_{\mathcal{L}}$, а значит по предыдущей лемме
+
+${\llbracket \alpha \lor \beta \rrbracket}_{\Gamma(\mathcal{L})} = 1_{\Gamma(\mathcal{L})}$.
+
+Значит, ${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} = 1_{\Gamma(\mathcal{L})}$ или
+${\llbracket \beta \rrbracket}_{\Gamma(\mathcal{L})} = 1_{\Gamma(\mathcal{L})}$
+
+Значит, $\vdash \alpha$ или $\vdash \beta$.
+\end{proof}
+
+\begin{consequence}
+$\vdash \alpha \lor \beta$ влечёт $\vdash \alpha$ или $\vdash \beta$.
+\end{consequence}
+
+\section{Дизъюнктивность ИИВ}
+
+\begin{lemma}
+${\llbracket \alpha \rrbracket}_{\mathcal{L}} = 1_{\mathcal{L}}$
+\end{lemma}
+
+\begin{proof}
+Если $\vdash \alpha$, то ${\llbracket \alpha \rrbracket}_{A} = 1_{A}$, где $A$ - алгебра Гейтинга.
+
+То есть ${\llbracket \alpha \rrbracket}_{\mathcal{L}} = 1_{\mathcal{L}}$
+
+${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} = 1_{\Gamma(\mathcal{L})}$
+\end{proof}
+
+\begin{lemma}
+Если ${\llbracket \alpha \rrbracket}_{\mathcal{L}} \neq 1$, то ${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} \neq 1$
+\end{lemma}
+
+\begin{proof}
+//TODO
+\end{proof}
+
+\begin{lemma}
+Если ${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} = 1$, то
+\\TODO
+\end{lemma}
+
+Итак, если ${\llbracket \alpha \rrbracket}_{\Gamma(\mathcal{L})} = 1$ при любой оценке,
+то и ${\llbracket \alpha \rrbracket}_{\mathcal{L}} = 1$ при любой оценке.
+
+\begin{definition}
+Пропозициональное исчисление называется табличным, если существует конечная точная модель этого исчисления, т.е.
+такая конечная логическая матрица, в которой истинны те и
+только те пропозициональные формулы, которые выводимы в
+этом исчислении.
+\end{definition}
+
+1) ИИВ дизъюнктивно
+2) ИИВ нетаблично

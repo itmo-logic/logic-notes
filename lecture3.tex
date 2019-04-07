@@ -328,18 +328,47 @@ $(r+4)$ & $\alpha$ & M.P. $r$, $r+3$
 для любого $k$ от $0$ до $n$ и любой
 оценки переменных $x_1, \dots x_k$ справедливо 
 $_{[x_1]} P_1, \dots _{[x_k]} P_k \vdash \alpha$.
+
+Введем обозначение $_{[t]}a = a$, если t = и, иначе = $\neg$a \\
+Тогда $_{[\llbracket a \rrbracket]}$a, $_{[\llbracket b \rrbracket]}$b $\vdash$ $_{[\llbracket a \star b \rrbracket]}$a $\star$ b \\
+\\
+Пусть a содержит $p_1, .. p_n$ Докажем, что \\
+$_{[\llbracket p_1 \rrbracket]}p_1, .. _{[\llbracket p_n \rrbracket]}p_n \vdash _{[\llbracket a \rrbracket]}a$ \\
+Доказательство по индукции \\
+База: $a = p, p \vdash p, \neg p \vdash \neg p$\\
+Переход: Обозначим $_{[\llbracket p_1 \rrbracket]}p_1, .. _{[\llbracket p_n \rrbracket]}p_n$ - $\Pi$ \\
+a = b $\star$ c. Тогда по предположению $\Pi$ $\vdash$ $_{[\llbracket b \rrbracket]}$b и $\Pi$ $\vdash$ $_{[\llbracket c \rrbracket]}$c \\
+Тогда по нашему обозначению $_{[\llbracket b \rrbracket)}$]b, $_{[\llbracket c \rrbracket]}$c $\vdash$ $_{[\llbracket a \rrbracket]}$a \\
+\\
+Теперь если a общезначимо, то $_{[\llbracket p_1 \rrbracket]}p_1, .. _{[\llbracket p_n \rrbracket]}p_n \vdash a$ \\
+в частности имеем $_{[\llbracket p_1 \rrbracket]}p_1, .. _{[\llbracket p_{n-1}  \rrbracket]}p_{n-1},p_n \vdash a$ и \\
+$_{[\llbracket p_1 \rrbracket]}p_1, .. _{[\llbracket p_{n-1}  \rrbracket]}p_{n-1}, \neg p_n \vdash a$ откуда по лемме можно выкинуть\\
+$p_n$. после $n-1$ итерации получим $\vdash$ a чтд
+
 Нетрудно заметить, что утверждение теоремы непосредственно следует из данного 
 утверждения для $k=0$. 
 Доказательство будет вестись индукцией по $n-k$.
 
-База. Пусть $n-k=0$, то есть $k=n$. 
-$\models \alpha$ означает, что при любой оценке 
-$x_1, \dots x_n$ пропозициональных переменных $P_1, \dots P_n$
-справедливо $\alpha [P_1 \coloneqq  x_1, \dots P_n \coloneqq  x_n] = \texttt{И}$.
-Возьмем некоторую оценку переменных
-$x_1, \dots x_n$. Тогда, по лемме \ref{valuation_formula},
-$_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash {_{\alpha [P_1 \coloneqq  x_1, \dots P_n \coloneqq  x_n]} \alpha}$
-то есть $_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash \alpha$.
+База k = 0. Тогда перед нами аксиома, необходимо проверить, что все аксиомы общезначимы. Проведем разбор несколько из них, остальное будет аналогично. Для проверки общезначимости необходимо убедиться в справдливости формулы сделав непосредственную подстановку. \\
+Сх.1 a $\to$ b $\to$ a \\
+\\
+\begin{tabular}{ c c c c }
+a & b & b $\to$ a & a $\to$ b $\to$ a\\
+л & л & и & и\\
+и & л & л & и\\
+л & и & и & и\\
+и & и & и & и\\
+\end{tabular}\\
+\\
+Сх.9 (a $\to$ b) $\to$ (a $\to$ $\neg$b) $\to$ $\neg$a \\
+\\
+\begin{tabular}{ c c c c c c c c}
+a & b & $\neg$b & $\neg$a & a $\to$ b & a $\to$ $\neg$b & (a $\to$ $\neg$b) $\to$ $\neg$a & (a $\to$ b) $\to$ (a $\to$ $\neg$b) $\to$ $\neg$a\\
+л & л & и & и & и & и & и & и\\
+и & л & и & л & л & и & л & и\\
+л & и & л & и & и & и & и & и\\
+и & и & л & л & и & л & и & и\\
+\end{tabular}
 
 Переход. Пусть утверждение уже доказано для некоторого $n-k > 0$, покажем его
 для $n-k+1$ (то есть доказано для $k < n$, покажем его для $k-1$).

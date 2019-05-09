@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: nsychev/itmo-logic-texlive:1.0
+    steps:
+      - checkout
+      - run:
+          name: Build LaTeX project
+          command: make
+      - store_artifacts:
+          path: build/notes.pdf
+          destination: notes
+      - persist_to_workspace:
+          root: build
+          paths: notes.pdf
+  deploy:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: build
+      - add_ssh_keys:
+          fingerprints:
+            - "50:51:45:24:b3:2e:f4:3f:d0:e8:0d:3e:67:83:02:3d"
+      - run:
+          name: Push updated PDF to the repository
+          command: |
+            git clone $CIRCLE_REPOSITORY_URL repo
+            cd repo
+            git config user.name "Builder"
+            git config user.email "mail@ifmo.ru"
+            git checkout gh-pages
+            cp ../build/notes.pdf .
+            git add notes.pdf
+            git commit -m "Build notes.pdf from sources"
+            git push origin gh-pages
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: gh-pages
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

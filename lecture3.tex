@@ -326,8 +326,8 @@ $_{[\llbracket \alpha \rrbracket]} \alpha, _{[\llbracket \beta \rrbracket]} \bet
 \begin{proof}Упражнение\end{proof}
 
 \begin{lemma}
-Если $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то \\
-$_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n \vdash _{[\llbracket \alpha \rrbracket]}\alpha$
+Если $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то
+\[_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n \vdash _{[\llbracket \alpha \rrbracket]}\alpha\]
 \end{lemma}
 
 \begin{proof}
@@ -335,11 +335,12 @@ $_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n \vda
 
 База: $\alpha = P$. Тогда очевидно, что $P \vdash P$, $\neg P \vdash \neg P$.
 
-Переход: Пусть утверждение уже доказано для любых формул, короче некоторой формулы $\alpha$. Докажем его для формулы $\alpha$.\\
-Обозначим $_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n$ за $\Pi$.\\
+Переход: Пусть утверждение уже доказано для любых формул, короче некоторой формулы $\alpha$. Докажем его для формулы $\alpha$.
+
+Обозначим $_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n$ за $\Pi$.
+
 $\alpha \equiv \beta \star \gamma$. Тогда, так как формулы $\beta$ и $\gamma$ короче формулы $\alpha$, то к ним применимо предположение индукции, то есть $\Pi$ $\vdash$ $_{[\llbracket \beta \rrbracket]}\beta$ и $\Pi$ $\vdash$ $_{[\llbracket \gamma \rrbracket]}\gamma$.
 По лемме \ref{any_connection}, $_{[\llbracket \beta \rrbracket]}\beta, _{[\llbracket \gamma \rrbracket]}\gamma \vdash _{[\llbracket \alpha \rrbracket]}\alpha$.
-
 \end{proof}
 
 \begin{lemma}\label{derivability_with_propositionals}
@@ -381,7 +382,6 @@ $_{[x_1]} P_1, \dots _{[x_{k-1}]} P_{k-1}, P_{k}$ & $\vdash \alpha$
 
 Тогда по лемме об исключении допущения, справедливо 
 $_{[x_1]} P_1, \dots _{[x_{k-1}]} P_{k-1} \vdash \alpha$.
-
 \end{proof}
 
 %\begin{lemma}\label{formula_valuation}
@@ -450,7 +450,6 @@ $\alpha_q$, причем $\alpha_q \equiv \alpha_p \rightarrow \alpha_{k+1}$.
 $\llbracket\alpha_p \rightarrow \alpha_{k+1}\rrbracket^{P_1\coloneqq x_1, \dots P_n\coloneqq x_n} = \texttt{И}$.
 Из таблицы истинности импликации следует, что неизбежно 
 $\llbracket\alpha_{k+1}\rrbracket^{P_1\coloneqq x_1, \dots P_n\coloneqq x_n} = \texttt{И}$.
-
 \end{proof}
 
 Заметим, что вместе из этих двух теорем следует, что если неверно, что $\vdash \alpha$,

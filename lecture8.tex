@@ -1,0 +1,172 @@
+\documentclass{article}
+\documentclass[12pt,a4paper,oneside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{tikz}
+%\usepackage{bnf}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{proof}
+
+\begin{document}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Определение}[section]
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{axiom}{Аксиома}[section]
+\newtheorem{lemma}[theorem]{Лемма}
+
+\newcommand{\gq}[1]{\texttt{<<}#1\texttt{>>}}
+\newcommand{\ogq}[1]{\overline{\texttt{<<}#1\texttt{>>}}}
+\newcommand{\s}[1]{\texttt{#1}}
+
+\section{Неразрешимость исчисления предикатов}
+\subsection{Машина Тьюринга}
+\begin{definition} Путь имеется потенциально бесконечная в обе стороны лента, на которую записывается входное слово, и указатель на первый символ слова. Все остальные символы ленты - $\varepsilon$. Также имеется $\mathcal{A}$ - алфавит ленты, $\mathcal{S}$ - алфавит состояний и таблица переходов, сопоставляющаяя паре символа ленты и состояния тройку $\langle\mathcal{A}_i$,  $\mathcal{S}_j,$  $\lbrace \leftarrow, \rightarrow, \downarrow \rbrace\rangle$ - символ, который будет записан в то место ленты, куда указывает головка, новое состояние и изменение положение головки. Определим три обязательных состояния: S - стартовое, $S_a$ - допускающее и $S_r$ - отклоняющее. Получившуюся конструкцию назовём \textit{машиной Тьюринга}.
+\end{definition}
+
+TODO про потенциальную и реальную бесконечность (?)
+
+Процесс работы машины Тьюринга следующий. Машина запускается в стартовом состоянии S, головка указывается на первый символ слова на ленте. Пусть текущее состояние $S_i$, а символ на ленте $\mathcal{A}_j$, тогда рассматривается соответствующая трока $\langle\mathcal{A}_k$,  $\mathcal{S}_p,$  $\lbrace \leftarrow, \rightarrow, \downarrow \rbrace\rangle$: осуществляется переход в состояние $\mathcal{S}_p,$, символ $\mathcal{A}_j$ заменяется на $\mathcal{A}_k$, а указатель сдвигается в соответствии с третьим аргументом. Машина прекращает свою работу при попадании в состояние $S_a$ или $S_r$.
+
+Рассмотрим некоторые примеры. Пусть нам дана двоичная строка и необходимо удалить незначащие нули. Для этого достаточно одного состояния: будем двигаться вправо по слову и заменять все нули на $\varepsilon$, как только встретим единицу, перейдём в допускающее состояние $S_a$. Однако, исходное число могло быть равно нулю, то есть не содержать ни одной единицы, а значит, мы стёрли бы его полностью, дойдя до пары (S, $\varepsilon$). В таком случае можно просто написать 0 заново и перейти в допускающее состояние.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c c}
+        & 0 & 1 & $\varepsilon$ \\
+        
+        S & 
+        $\langle\varepsilon$, S, $\rightarrow\rangle$ & 
+        $\langle$1, $S_a$, $\downarrow\rangle$ & 
+        $\langle$0, $S_a$, $\downarrow\rangle$ \\
+    \end{tabular}
+    \begin{flushleft}
+    \caption[Пример ]{Удаление ведущих нулей}
+    \end{flushleft}
+    \label{tab:my_label}
+\end{table}
+
+Другой пример. Прибавим единицу к числу в двоичной записи: с помощью состояния S перейдём к последнему символу. Затем прибавим единицу к текущей цифре на ленте. Если это 0, заменим его на 1 и перейдём в допускающее состояние. Если это 1, то запишем 0, и прибавим единицу (бит переноса) к числу слева. Может так случиться, что длина числа после прибавления единицы должна увеличиться на один символ. В таком случае машина перейдёт в пару (ADD, $\varepsilon$). Заменим $\varepsilon$ на 1 и закончим работу.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c c}
+        & 0 & 1 & $\varepsilon$ \\
+        
+        S &
+        $\langle$0, S, $\rightarrow\rangle$ & 
+        $\langle$1, S, $\rightarrow\rangle$ & 
+        $\langle\varepsilon$, ADD, $\leftarrow\rangle$ \\
+        
+        ADD &
+        $\langle$1, $S_a$, $\downarrow\rangle$ &
+        $\langle$0, ADD, $\leftarrow\rangle$ &
+        $\langle$1, $S_a$, $\downarrow\rangle$ \\
+        
+    \end{tabular}
+    \caption{Прибавление единицы к числу на ленте}
+    \label{tab:my_label}
+\end{table}
+
+\begin{definition} \textit{Разрешителем} языка $\mathcal{L}$ назовём такую машину Тьюринга $\mathcal{T}$, которая принимает на вход слово $\phi$ и переходит в допускающее состояние, если $\phi \in \mathcal{L}$, и в отклоняющее состояние, если $\phi \notin \mathcal{L}$.
+\end{definition} 
+
+\begin{definition} Язык $\mathcal{L}$ \textit{разрешим} если существует разрешитель этого языка.
+\end{definition} 
+
+Рассмотрим пример разрешимого языка. Пусть $\mathcal{L}$ содержит все двоичные числа кратные четырём. Построим соответсвующий разрешитель, чтобы показать его разрешимость.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c c}
+        & 0 & 1 & $\varepsilon$ \\
+        
+        S &
+        $\langle$0, S, $\rightarrow\rangle$ & 
+        $\langle$1, S, $\rightarrow\rangle$ & 
+        $\langle\varepsilon$, FirstZero, $\leftarrow\rangle$ \\
+        
+        FirstZero &
+        $\langle$0, SecondZero, $\leftarrow\rangle$ &
+        $\langle$1, $S_r$, $\downarrow\rangle$ &
+        $\langle\varepsilon$, $S_a$, $\downarrow\rangle$ \\
+        
+        SecondZero &
+        $\langle$0, $S_a$, $\downarrow\rangle$ &
+        $\langle$1, $S_r$, $\downarrow\rangle$ &
+        $\langle\varepsilon$, $S_a$, $\downarrow\rangle$ \\
+    \end{tabular}
+    \caption{Проверка кратности четырём}
+    \label{tab:my_label}
+\end{table}
+
+Состояние FirstZero ищет первый ноль, если он обнаруживается, то делается переход в состояние SecondZero, в противном случае слово не принимается. Сосотояние SecondZero не принимает слово если на ленте единица, иначе слово допускается. 
+
+\subsection{Проблема останова}
+
+\begin{theorem} Не существует машины Тьюринга, которая по заданной машине Тьюринга $\mathcal{T}$ и входной строке $\phi$ определит перейдёт ли $\mathcal{T}$ в допускающее состояние на входных данных $\phi$.
+\end{theorem}
+
+\begin{proof} 
+Пусть такая машина Тьюринга существует. Рассмотрим следующую программу:
+
+\begin{verbatim}
+    p(x) : 
+        if ($\mathcal{T}$(x, x)) while true;
+        else return 1;
+\end{verbatim}
+
+Очевидно, что она зациклиться если если программа х останавливается на вводе строки х (TODO пример про длину стоки) и переходит в допускающее состояние в противном случае. Но что если взять код самой программы p и подать ей на вход? Пусть разрешитель будет считать, что p(p) остановиться, тогда условие в if'е выполниться, запуститься бесконечный цикл. Наоборот, если по мнению разрешителя программа зацикливается, то он вернёт false и выполниться строка "return 1" - программа завершиться. Получаем противоречие. Выходит, что $\mathcal{T}$ не существует.
+\end{proof}
+
+Здесь мы сталкиваемся с одним из неразрешимых языков - языком программ, останавливающимися на входе соответствующем коду самой программы. И, как видим, машина Тьюринга помогла показать его неразрешимоть. Оказывается, что язык исчисления предикатов также является неразрешимым, докажем это, предложив алгоритм кодирования в нём произвольной машины Тьюринга, сведя разрешимость ИП к проблеме останова.
+
+\subsection{Кодирование машины Тьюринга в исчислении предикатов}
+
+Для кодирования ленты ведём функциональный символ \textit{c : D $\times$ D $\rightarrow$ D}, обозначающий конкатенацию строк. Правый аргумент это подстрока ленты, начинающаяся с символа, на который указывает головка и до первого $\varepsilon$ включительно, а второй - всё, что слева в обратном порядке. Чтобы лучше разобраться, рассмотрим пример кодирования строки "mathlogic"\ , если головка указывает на символ l:
+
+\begin{center}
+        с(c('t', c('h', c('a', c('m', $\varepsilon$))), c('l', c('o', c('g', c('i', c('c', $\varepsilon$)))))))
+\end{center}
+
+Введём также множество предикатных символов вида $P_k(s, t)$ - состояние k при ленте (s, t) достижимо.
+Составим с их помощью набор правил $\pi$. Пусть в таблице переходов состоянию $s_i$ и символу $\mathcal{A}_j$ соответствует тройка $\langle\mathcal{A}_k$,  $\mathcal{S}_r,$ $\downarrow\rangle$. Тогда ей будет сответствовать правило:
+
+\begin{center}
+    $\forall$p.$\forall$q.$P_i(p, c(\mathcal{A}_j, q))\to P_r(p, c(\mathcal{A}_k, q))$
+\end{center}
+
+Заметим, что индекс левого предикатного символа соответсвтует индексу текущего состояния, а индекс правого соответсвует индексу состояния, в которое надо перейти, аналогично, для символа под головкой ленты.
+
+Рассмотрим правила для перехода вправо. (TODO про конечность ленты) 
+\begin{center}
+    $\forall$p.$\forall$q.$P_i(p, c(\mathcal{A}_j, q))\to P_r(c(\mathcal{A}_k, p), q)$
+    
+    $\forall$p.$P_i(p, \varepsilon)\to P_r(p, c(\mathcal{A}_k, \varepsilon))$
+\end{center}
+
+Введём также следующие правила:
+\begin{center}
+    $\pi_0=P_0(\varepsilon$,<входная строка>) - стартовое состояние
+    
+    $\pi_a=\exists$p.$\exists$q.$P_a$(p, q) - принимающее состояние
+\end{center}
+
+\subsection{Теорема о неразрешимости}
+
+\begin{theorem} $\pi_0, \pi \vdash \pi_a \Longleftrightarrow \mathcal{T}$ завершит работу с завершающем состоянии.
+\end{theorem} 
+\begin{proof}
+    $\Longrightarrow$ TODO
+\end{proof}
+\end{document}
+

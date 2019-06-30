@@ -189,8 +189,8 @@ $A$ & $B$ & $A \with B$ & утверждение\\
 И & И & И & $A, B \vdash A \with B$
 \end{tabular}
 
-\begin{lemma}
-Каждое из построенных по таблицам истинности утверждений доказуемо.
+\begin{lemma}\label{any_connection}
+$_{[\llbracket \alpha \rrbracket]} \alpha, _{[\llbracket \beta \rrbracket]} \beta \vdash _{[\llbracket \alpha \star \beta \rrbracket]} \alpha \star \beta$, где $\star$ --- любая связка.
 \end{lemma}
 \begin{proof} Упражнение.
 \end{proof}
@@ -319,6 +319,30 @@ $(r+4)$ & $\alpha$ & M.P. $r$, $r+3$
 
 \end{proof}
 
+\begin{lemma}
+Если $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то
+\[_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n \vdash _{[\llbracket \alpha \rrbracket]}\alpha\]
+\end{lemma}
+
+\begin{proof}
+Докажем индукцией по длине формулы.
+
+База: $\alpha = P$. Тогда очевидно, что $P \vdash P$, $\neg P \vdash \neg P$.
+
+Переход: Пусть утверждение уже доказано для любых формул, короче некоторой формулы $\alpha$. Докажем его для формулы $\alpha$.
+
+Обозначим $_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n$ за $\Pi$.
+
+$\alpha \equiv \beta \star \gamma$. Тогда, так как формулы $\beta$ и $\gamma$ короче формулы $\alpha$, то к ним применимо предположение индукции, то есть $\Pi$ $\vdash$ $_{[\llbracket \beta \rrbracket]}\beta$ и $\Pi$ $\vdash$ $_{[\llbracket \gamma \rrbracket]}\gamma$.
+По лемме \ref{any_connection}, $_{[\llbracket \beta \rrbracket]}\beta, _{[\llbracket \gamma \rrbracket]}\gamma \vdash _{[\llbracket \alpha \rrbracket]}\alpha$.
+\end{proof}
+
+\begin{lemma}\label{derivability_with_propositionals}
+Если $\models \alpha$ и $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то $_{[x_1]} P_1, \dots _{[x_n]} P_n \vdash \alpha$ при любых $x_i$.
+\end{lemma}
+
+\begin{proof}Частный случай леммы \ref{derivability_with_propositionals} и определения $\models$.\end{proof}
+
 \begin{theorem}{О полноте исчисления высказываний.}
 Пусть справедливо $\models \alpha$. Тогда также справедливо, что $\vdash \alpha$.
 \end{theorem}
@@ -337,12 +361,11 @@ $\models \alpha$ означает, что при любой оценке
 $x_1, \dots x_n$ пропозициональных переменных $P_1, \dots P_n$
 справедливо $\alpha [P_1 \coloneqq  x_1, \dots P_n \coloneqq  x_n] = \texttt{И}$.
 Возьмем некоторую оценку переменных
-$x_1, \dots x_n$. Тогда, по лемме \ref{valuation_formula},
-$_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash {_{\alpha [P_1 \coloneqq  x_1, \dots P_n \coloneqq  x_n]} \alpha}$
-то есть $_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash \alpha$.
+$x_1, \dots x_n$. Тогда по лемме \ref{derivability_with_propositionals}
+$_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash \alpha$.
 
-Переход. Пусть утверждение уже доказано для некоторого $n-k > 0$, покажем его
-для $n-k+1$ (то есть доказано для $k < n$, покажем его для $k-1$).
+Переход. Пусть утверждение уже доказано для некоторого $n-k \geq 0$, покажем его
+для $n-k+1$ (то есть доказано для $k \leq n$, покажем его для $k-1$).
 Возьмем некоторую оценку переменных $x_1, \dots x_{k-1}$.
 По предположению, $_{[x_1]} P_1, \dots _{[x_{k}]} P_{k} \vdash \alpha$, то есть
 
@@ -353,7 +376,6 @@ $_{[x_1]} P_1, \dots _{[x_{k-1}]} P_{k-1}, P_{k}$ & $\vdash \alpha$
 
 Тогда по лемме об исключении допущения, справедливо 
 $_{[x_1]} P_1, \dots _{[x_{k-1}]} P_{k-1} \vdash \alpha$.
-
 \end{proof}
 
 %\begin{lemma}\label{formula_valuation}
@@ -381,8 +403,29 @@ $_{[x_1]} P_1, \dots _{[x_{k-1}]} P_{k-1} \vdash \alpha$.
 Докажем, что для каждого $k$ все высказывания $\alpha_l$ при $l \le k$ --- тавтологии.
 Доказательство будем вести индукцией по $k$.
 
-База. Пусть $k=0$, тогда нет ни одного высказывания, про которое нужно доказать, что
-оно --- тавтология, то есть утверждение автоматически верно.
+База. Пусть $k=0$. Тогда перед нами аксиома. Докажем, что все аксиомы общезначимы. Для проверки общезначимости необходимо сделать непосредственную подстановку и убедиться в истинности формулы. Проведем разбор для двух аксиом --- остальные будут аналогичны.
+
+Схема аксиом 1:
+
+\begin{tabular}{cccc}
+$\alpha$ & $\beta$ & $\beta \to \alpha$ & $\alpha \to \beta \to \alpha$\\
+\hline
+Л & Л & И & И\\
+И & Л & Л & И\\
+Л & И & И & И\\
+И & И & И & И\\
+\end{tabular}\\
+
+Схема аксиом 9:
+
+\begin{tabular}{cccccccc}
+$\alpha$ & $\beta$ & $\neg\beta$ & $\neg\alpha$ & $\alpha \to \beta$ & $\alpha \to \neg\beta$ & $(\alpha \to \neg\beta) \to \neg\alpha$ & $(\alpha \to \beta) \to (\alpha \to \neg\beta) \to \neg\alpha$ \\
+\hline
+Л & Л & И & И & И & И & И & И\\
+И & Л & И & Л & Л & И & Л & И\\
+Л & И & Л & И & И & И & И & И\\
+И & И & Л & Л & И & Л & И & И\\
+\end{tabular}\\
 
 Переход. Пусть для некоторого $k$ утверждение справедливо, докажем его для $k+1$.
 Выберем некоторую оценку $x_1, \dots x_n$ пропозициональных 
@@ -401,7 +444,6 @@ $\alpha_q$, причем $\alpha_q \equiv \alpha_p \rightarrow \alpha_{k+1}$.
 $\llbracket\alpha_p \rightarrow \alpha_{k+1}\rrbracket^{P_1\coloneqq x_1, \dots P_n\coloneqq x_n} = \texttt{И}$.
 Из таблицы истинности импликации следует, что неизбежно 
 $\llbracket\alpha_{k+1}\rrbracket^{P_1\coloneqq x_1, \dots P_n\coloneqq x_n} = \texttt{И}$.
-
 \end{proof}
 
 Заметим, что вместе из этих двух теорем следует, что если неверно, что $\vdash \alpha$,

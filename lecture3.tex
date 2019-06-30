@@ -1,55 +1,9 @@
 \section{Теорема о дедукции}
 
-Соглашение об обозначениях. Будем обозначать буквами 
-$\Gamma, \Delta, \Sigma, \Pi$ списки формул (возможно, пустые).
-
-\begin{definition}{Вывод из допущений.}
-Пусть $\Gamma$ -- некоторый список высказываний, а $\alpha$ --- 
-некоторое высказывание. 
-Тогда мы будем говорить, что высказывание $\alpha$ \emph{выводимо} из $\Gamma$ 
-(и записывать это как $\Gamma \vdash \alpha$), если существует такая 
-последовательность высказываний $\alpha_1, \alpha_2, \dots \alpha_{n-1}, \alpha$
-(называемая \emph{выводом} $\alpha$ из $\Gamma$), 
-что каждое из высказываний $\alpha_i$ --- это 
-\begin{itemize}
-\item либо аксиома,
-\vspace{-0.2cm}
-\item либо получается по правилу Modus Ponens из предыдущих высказываний, 
-\vspace{-0.2cm}
-\item либо --- высказывание из списка $\Gamma$.
-\end{itemize}
-Элементы $\Gamma$ мы будем называть \emph{допущениями}. Также эти элементы
-называют предположениями или гипотезами. 
-\end{definition}
-
-В свете данного определения можно заметить, что доказательство --- это
-вывод из пустого списка допущений. 
-
 \begin{theorem}\label{deduction_theorem}{Теорема о дедукции.}
 Утверждение $\Gamma \vdash \alpha \rightarrow \beta$ справедливо тогда и 
 только тогда, когда справедливо, что $\Gamma, \alpha \vdash \beta$.
 \end{theorem}
-
-Для доказательства рассмотрим следующую лемму:
-
-\begin{lemma}
-$\vdash \alpha \rightarrow \alpha$
-\end{lemma}
-
-\begin{proof}\ 
-
-\begin{tabular}{lll}
-(1) & $\alpha \rightarrow (\alpha \rightarrow \alpha)$&Сх. акс. 1\\
-(2) & $(\alpha \rightarrow (\alpha \rightarrow \alpha)) \rightarrow 
-  (\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
-  (\alpha \rightarrow \alpha)$&Сх. акс. 2\\
-(3) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha)) \rightarrow
-  (\alpha \rightarrow \alpha)$&M.P. 1,2\\
-(4) & $(\alpha \rightarrow ((\alpha \rightarrow \alpha) \rightarrow \alpha))$ & Сх. акс. 1\\
-(5) & $\alpha \rightarrow \alpha$ & M.P. 4,3\\
-\end{tabular}\ 
-
-\end{proof}
 
 \begin{proof}[Доказательство теоремы \ref{deduction_theorem}]
 
@@ -119,13 +73,6 @@ $((\alpha \rightarrow (\delta_j \rightarrow \delta_i)) \rightarrow (\alpha \righ
 
 \end{enumerate}
 \end{proof}
-
-По аналогии мы можем рассмотреть отношение \emph{следования}.
-Будем говорить, что высказывание $\alpha$ следует из высказываний $\Gamma$,
-если при любой оценке пропозициональных переменных, входящих в высказывания 
-$\Gamma$ и $\alpha$, на которых все высказывания из $\Gamma$ истинны, 
-$\alpha$ также истинно.
-Записывать, что $\alpha$ следует из $\Gamma$, будем так: $\Gamma \models \alpha$.
 
 \section{Теорема о полноте исчисления высказываний}
 

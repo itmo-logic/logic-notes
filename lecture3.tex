@@ -189,8 +189,8 @@ $A$ & $B$ & $A \with B$ & утверждение\\
 И & И & И & $A, B \vdash A \with B$
 \end{tabular}
 
-\begin{lemma}
-Каждое из построенных по таблицам истинности утверждений доказуемо.
+\begin{lemma}\label{any_connection}
+$_{[\llbracket \alpha \rrbracket]} \alpha, _{[\llbracket \beta \rrbracket]} \beta \vdash _{[\llbracket \alpha \star \beta \rrbracket]} \alpha \star \beta$, где $\star$ --- любая связка.
 \end{lemma}
 \begin{proof} Упражнение.
 \end{proof}
@@ -319,12 +319,6 @@ $(r+4)$ & $\alpha$ & M.P. $r$, $r+3$
 
 \end{proof}
 
-\begin{lemma}\label{any_connection}
-$_{[\llbracket \alpha \rrbracket]} \alpha, _{[\llbracket \beta \rrbracket]} \beta \vdash _{[\llbracket \alpha \star \beta \rrbracket]} \alpha \star \beta$, где $\star$ --- любая связка.
-\end{lemma}
-
-\begin{proof}Упражнение\end{proof}
-
 \begin{lemma}
 Если $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то
 \[_{[\llbracket P_1 \rrbracket]}P_1, \dots _{[\llbracket P_n \rrbracket]}P_n \vdash _{[\llbracket \alpha \rrbracket]}\alpha\]
@@ -347,7 +341,7 @@ $\alpha \equiv \beta \star \gamma$. Тогда, так как формулы $\b
 Если $\models \alpha$ и $\alpha$ содержит $n$ пропозициональных переменных $P_1 \dots P_n$, то $_{[x_1]} P_1, \dots _{[x_n]} P_n \vdash \alpha$ при любых $x_i$.
 \end{lemma}
 
-\begin{proof}Упражнение\end{proof}
+\begin{proof}Частный случай леммы \ref{derivability_with_propositionals} и определения $\models$.\end{proof}
 
 \begin{theorem}{О полноте исчисления высказываний.}
 Пусть справедливо $\models \alpha$. Тогда также справедливо, что $\vdash \alpha$.
@@ -370,8 +364,8 @@ $x_1, \dots x_n$ пропозициональных переменных $P_1, \
 $x_1, \dots x_n$. Тогда по лемме \ref{derivability_with_propositionals}
 $_{[x_1]} P_1, \dots _{[x_{n}]} P_{n} \vdash \alpha$.
 
-Переход. Пусть утверждение уже доказано для некоторого $n-k > 0$, покажем его
-для $n-k+1$ (то есть доказано для $k < n$, покажем его для $k-1$).
+Переход. Пусть утверждение уже доказано для некоторого $n-k \geq 0$, покажем его
+для $n-k+1$ (то есть доказано для $k \leq n$, покажем его для $k-1$).
 Возьмем некоторую оценку переменных $x_1, \dots x_{k-1}$.
 По предположению, $_{[x_1]} P_1, \dots _{[x_{k}]} P_{k} \vdash \alpha$, то есть
 
